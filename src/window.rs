@@ -130,14 +130,20 @@ impl Window {
                     );
                 }
 
-                glfw::WindowEvent::Key(key, scancode, action, mods) => match key {
+                glfw::WindowEvent::Key(key, scancode, Action::Press, mods) => match key {
                     glfw::Key::Backspace => self.app.dispatch_event(
                         EventFlow::Backspace,
                         &mut self.gl,
                         &mut self.resource,
                     ),
-                    glfw::Key::Left => {}
-                    glfw::Key::Right => {}
+                    glfw::Key::Left => {
+                        self.app
+                            .dispatch_event(EventFlow::Left, &mut self.gl, &mut self.resource)
+                    }
+                    glfw::Key::Right => {
+                        self.app
+                            .dispatch_event(EventFlow::Right, &mut self.gl, &mut self.resource)
+                    }
                     _ => (),
                 },
                 glfw::WindowEvent::MouseButton(btn, action, ..) => match action {

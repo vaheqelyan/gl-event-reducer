@@ -63,5 +63,14 @@ impl Ddom {
         }
     }
 
-    pub fn backspace(&mut self, id: &usize) {}
+    pub fn backspace(&mut self, id: &usize, container: f32) {
+        if let Some(data_element) = self.input_data.get_mut(&(id + 1)) {
+            let c = data_element.value.remove(data_element.cursor - 1);
+
+            let measure = self.font.get(c.to_string());
+
+            data_element.cursor_pos -= measure.advance * 0.07;
+            data_element.cursor -= 1;
+        }
+    }
 }

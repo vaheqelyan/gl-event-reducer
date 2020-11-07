@@ -29,6 +29,8 @@ pub enum EventFlow {
     Click,
     Type(char),
     Backspace,
+    Left,
+    Right,
 }
 
 impl App {
@@ -85,10 +87,13 @@ impl App {
 
             EventFlow::Backspace => {
                 if self.focus != None {
-                    self.dom.borrow_mut().ddom.backspace(&self.focus.unwrap());
+                    let mut borrow_dom = self.dom.borrow_mut();
+                    let bound = borrow_dom.get(self.focus.unwrap()).width;
+
+                    borrow_dom.ddom.backspace(&self.focus.unwrap(), bound);
                 }
 
-                self.reflow()
+                gl.draw(generate(&self.dom, resource));
             }
 
             EventFlow::Click => {
@@ -101,6 +106,8 @@ impl App {
                     }
                 }
             }
+
+            _ => (),
         }
     }
 }
