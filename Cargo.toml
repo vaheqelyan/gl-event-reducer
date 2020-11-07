@@ -1,0 +1,25 @@
+[package]
+name = "gl-event-reducer"
+version = "0.1.0"
+authors = ["Vahe Araqelyan <vahe.araqelyan.2013@hotmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+glfw = "0.34.0"
+gl = "0.14.0"
+cgmath = "0.17.0"
+num-traits = "0.2.11"
+image = "0.23.5"
+nalgebra = "0.22.0"
+nalgebra-glm = "0.3"
+fast-math = "0.1.1"
+
+[lib]
+name = "mylib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "mybin"
+path = "src/main.rs"
