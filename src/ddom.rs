@@ -65,12 +65,21 @@ impl Ddom {
 
     pub fn backspace(&mut self, id: &usize, container: f32) {
         if let Some(data_element) = self.input_data.get_mut(&(id + 1)) {
-            let c = data_element.value.remove(data_element.cursor - 1);
+            if !data_element.value.is_empty() {
+                let c = data_element.value.remove(data_element.cursor - 1);
 
-            let measure = self.font.get(c.to_string());
+                let mut size: f32 = 0.0;
+                for (pos, c) in data_element.value.chars().enumerate() {
+                    if pos < data_element.cursor {
+                        let measure = self.font.get(c.to_string());
+                        size += (measure.advance * 0.07);
+                    }
+                }
 
-            data_element.cursor_pos -= measure.advance * 0.07;
-            data_element.cursor -= 1;
+                data_element.cursor -= 1;
+                data_element.cursor_pos = clamp(size, 0.0, container);
+                data_element.push_left = clamp_min(size - container, 0.0);
+            }
         }
     }
 }
