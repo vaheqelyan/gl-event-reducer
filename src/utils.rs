@@ -210,7 +210,7 @@ pub fn generate(dom: &Rc<RefCell<Dom>>, resource: &mut Resource) -> Vec<f32> {
 
             // Cursor
             buffer.append(&mut div(
-                xy(bound.x + input.cursor_pos, bound.y),
+                xy(bound.x + input.cursor_pos - 1.0, bound.y),
                 size(1.0, 192.0 * s),
                 rgb(0.0, 0.0, 0.0),
                 layer(0.1),
