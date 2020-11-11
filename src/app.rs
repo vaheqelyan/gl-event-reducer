@@ -107,7 +107,15 @@ impl App {
                 gl.draw(generate(&self.dom, resource));
             }
 
-            EventFlow::Right => if self.focus != None {},
+            EventFlow::Right => {
+                if self.focus != None {
+                    let mut borrow_dom = self.dom.borrow_mut();
+                    let bound = borrow_dom.get(self.focus.unwrap()).width;
+
+                    borrow_dom.ddom.cursor_right(&self.focus.unwrap(), bound);
+                }
+                gl.draw(generate(&self.dom, resource));
+            }
 
             EventFlow::Click => {
                 let element_id = find_bound_xy(&self.cursor, &self.dom);

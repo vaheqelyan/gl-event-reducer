@@ -70,6 +70,10 @@ impl Ddom {
         }
     }
 
+    pub fn cursor_right(&mut self, id: &usize, container: f32) {
+        if let Some(data_element) = self.input_data.get_mut(&(id + 1)) {}
+    }
+
     pub fn cursor_left(&mut self, id: &usize, container: f32) {
         if let Some(data_element) = self.input_data.get_mut(&(id + 1)) {
             if data_element.cursor > 0 {
