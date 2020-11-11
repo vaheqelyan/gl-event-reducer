@@ -139,10 +139,14 @@ impl Window {
                         ),
                         _ => (),
                     },
-                    glfw::Key::Left => {
-                        self.app
-                            .dispatch_event(EventFlow::Left, &mut self.gl, &mut self.resource)
-                    }
+                    glfw::Key::Left => match keymod {
+                        Action::Repeat | Action::Press => self.app.dispatch_event(
+                            EventFlow::Left,
+                            &mut self.gl,
+                            &mut self.resource,
+                        ),
+                        _ => (),
+                    },
                     glfw::Key::Right => {
                         self.app
                             .dispatch_event(EventFlow::Right, &mut self.gl, &mut self.resource)

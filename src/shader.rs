@@ -20,6 +20,9 @@ pub(crate) const VERTEX_SOURCE: &str = r#"
 
 pub(crate) const FRAGMENT_SOURCE: &str = r#"
 #version 430 core
+
+precision highp float;
+
 out vec4 frag_color;
 
 in vec2 uv;
@@ -40,6 +43,7 @@ float w = 1.0 * length ( vec2 ( dFdx ( t1.r ) , dFdy ( t1.r )) );
 float a = smoothstep(0.5 - w, 0.5 + w, t1.r);
 
 frag_color = vec4(0.0, 0.0, 0.0, a * 1.2);
+//frag_color = vec4(0.0, 0.0, 0.0, 1.0);
 
   }
 
