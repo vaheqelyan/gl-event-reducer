@@ -1,35 +1,23 @@
-/*
- * 170.27 9.7300005
- * 160.40001 9.87
- * 154.45001 5.95
- * 148.50002 5.95
- * 142.55002 5.95
- * 136.60002 5.95
- * 130.65002 5.95
- * 124.70003 5.95
- * 118.75003 5.95
- * 112.80003 5.95
- *
- *
- * */
 use crate::dom::Bound;
 use crate::font::Font;
 use std::collections::HashMap;
 
 use num_traits::{clamp, clamp_min};
 
+use crate::input::input_element::Input;
+
 #[derive(Debug)]
 struct ElementData {
     value: String,
 }
 
-#[derive(Debug)]
+/*#[derive(Debug)]
 pub struct Input {
     pub value: String,
     pub cursor: usize,
     pub cursor_pos: f32,
     pub push_left: f32,
-}
+}*/
 
 #[derive(Debug)]
 pub struct Ddom {
@@ -108,6 +96,7 @@ impl Ddom {
                 data_element.cursor -= 1;
                 data_element.push_left = if size.is_sign_negative() {
                     let d = (data_element.push_left - original).abs();
+                    println!("{:?}", d);
                     data_element.push_left - d
                 //data_element.push_left - ((measure.width * 0.07).round() + size)
                 } else {

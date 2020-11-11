@@ -2,7 +2,9 @@ use core::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
 
-use crate::ddom::{Ddom, Input};
+use crate::ddom::Ddom;
+
+use crate::input::input_element::Input;
 
 #[derive(Debug)]
 pub enum Element {
