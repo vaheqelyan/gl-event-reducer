@@ -208,17 +208,6 @@ pub fn generate(dom: &Rc<RefCell<Dom>>, resource: &mut Resource) -> Vec<f32> {
             let s: f32 = 0.07;
             let mut ty = bound.y + 192.0 * s;
 
-            // Cursor
-            buffer.append(&mut div(
-                xy(bound.x + input.cursor_pos - 1.0, bound.y),
-                size(1.0, 192.0 * s),
-                rgb(0.0, 0.0, 0.0),
-                layer(0.1),
-                &matrix,
-                bound.width,
-                bound.height,
-            ));
-
             for l in input.value.chars() {
                 let is_empty = l == ' ';
                 let measure = get_dom.ddom.font.get(l.to_string());
@@ -228,7 +217,7 @@ pub fn generate(dom: &Rc<RefCell<Dom>>, resource: &mut Resource) -> Vec<f32> {
                     resource.get_layer_id(&measure.path)
                 };
 
-                let mut x2 = tx - (measure.originX * s);
+                let mut x2 = (tx - (measure.originX * s));
                 let mut y2 = (ty - (measure.originY * s));
 
                 buffer.append(&mut div(
@@ -241,8 +230,19 @@ pub fn generate(dom: &Rc<RefCell<Dom>>, resource: &mut Resource) -> Vec<f32> {
                     measure.height,
                 ));
 
-                tx += (measure.advance * s);
+                tx = (tx + (measure.advance * s)).round();
             }
+
+            // Cursor
+            buffer.append(&mut div(
+                xy(bound.x + input.cursor_pos, bound.y),
+                size(1.0, 192.0 * s),
+                rgb(6.0, 95.0, 212.0),
+                layer(0.1),
+                &matrix,
+                bound.width,
+                bound.height,
+            ));
         }
     }
 
