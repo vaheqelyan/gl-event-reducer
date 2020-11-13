@@ -78,14 +78,25 @@ impl Ddom {
                 }
             }
 
+            let original = size;
+            size -= data_element.push_left;
+
             let cursor_at = data_element.cursor as usize;
             let cur_char = data_element.value.chars().nth(cursor_at + 1).unwrap();
             let measure = self.font.get(cur_char.to_string());
             let r = ((measure.advance - measure.width) * 0.07).abs().round();
 
-            data_element.cursor_pos = clamp((size - r), 0.0, container - 1.0);
+            data_element.cursor_pos = clamp((size), 0.0, container - 1.0);
             data_element.cursor += 1;
-            data_element.push_left = clamp_min(size - container, 0.0);
+
+            let is_out_of_range =
+                !((original - container) - data_element.push_left).is_sign_negative();
+
+            data_element.push_left = if is_out_of_range {
+                original - container
+            } else {
+                data_element.push_left
+            };
         }
     }
 
