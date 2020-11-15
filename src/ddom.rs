@@ -62,8 +62,7 @@ impl Ddom {
 
             let measure = self.font.get(value.to_string());
 
-            let r = ((measure.advance - measure.width) * 0.07).abs().round();
-            data_element.cursor_pos = clamp(size - r, 0.0, container - 1.0);
+            data_element.cursor_pos = clamp(size, 0.0, container - 1.0);
             data_element.push_left = clamp_min(size - container, 0.0);
         }
     }
@@ -76,16 +75,7 @@ impl Ddom {
                 if pos < data_element.cursor + 1 {
                     let measure = self.font.get(c.to_string());
 
-                    let r = if pos == data_element.cursor {
-                        // Get difference of advance and width
-                        ((measure.advance - measure.width) * 0.07).abs().round()
-                    } else {
-                        0.0
-                    };
-
-                    // Increase size by advanc of char, and substract it by its
-                    // advance/width diff
-                    size = (size + (measure.advance * 0.07)).round() - r;
+                    size = (size + (measure.advance * 0.07)).round();
                 }
             }
 
@@ -115,14 +105,7 @@ impl Ddom {
                     if pos < data_element.cursor - 1 {
                         let measure = self.font.get(c.to_string());
 
-                        let r = if pos == data_element.cursor - 2 {
-                            // Get difference of advance and width
-                            ((measure.advance - measure.width) * 0.07).abs().round()
-                        } else {
-                            0.0
-                        };
-
-                        size = (size + (measure.advance * 0.07)).round() - r;
+                        size = (size + (measure.advance * 0.07)).round();
                     }
                 }
 
@@ -143,7 +126,7 @@ impl Ddom {
 
     pub fn backspace(&mut self, id: &usize, container: f32) {
         if let Some(data_element) = self.input_data.get_mut(&(id + 1)) {
-let new_cursor = clamp_min(data_element.cursor - 1, 0);
+            let new_cursor = clamp_min(data_element.cursor - 1, 0);
             if new_cursor >= 0 {
                 let new_cursor = clamp_min(data_element.cursor - 1, 0);
                 let c = data_element.value.remove(new_cursor);
@@ -156,13 +139,8 @@ let new_cursor = clamp_min(data_element.cursor - 1, 0);
                     }
                 }
 
-                let cursor_at = data_element.cursor as usize;
-                let cur_char = data_element.value.chars().nth(cursor_at - 2).unwrap();
-                let measure = self.font.get(cur_char.to_string());
-                let r = ((measure.advance - measure.width) * 0.07).abs().round();
-
                 data_element.push_left = clamp_min(size - container, 0.0);
-                data_element.cursor_pos = clamp(size - r, 0.0, container);
+                data_element.cursor_pos = clamp(size, 0.0, container);
                 data_element.cursor = new_cursor;
             }
         }
