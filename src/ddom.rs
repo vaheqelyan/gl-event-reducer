@@ -55,15 +55,26 @@ impl Ddom {
 
             data_element.cursor += 1;
 
-            for c in data_element.value.chars() {
-                let measure = self.font.get(c.to_string());
-                size = (size + (measure.advance * 0.07)).round();
+            for (pos, c) in data_element.value.chars().enumerate() {
+                if pos < data_element.cursor {
+                    let measure = self.font.get(c.to_string());
+                    size = (size + (measure.advance * 0.07)).round();
+                }
             }
 
-            let measure = self.font.get(value.to_string());
+            let original = size;
+            size -= data_element.push_left;
 
             data_element.cursor_pos = clamp(size, 0.0, container - 1.0);
-            data_element.push_left = clamp_min(size - container, 0.0);
+
+            let is_out_of_range =
+                !((original - container) - data_element.push_left).is_sign_negative();
+
+            data_element.push_left = if is_out_of_range {
+                original - container
+            } else {
+                data_element.push_left
+            };
         }
     }
 
