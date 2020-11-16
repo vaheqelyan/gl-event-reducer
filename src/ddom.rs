@@ -137,22 +137,21 @@ impl Ddom {
 
     pub fn backspace(&mut self, id: &usize, container: f32) {
         if let Some(data_element) = self.input_data.get_mut(&(id + 1)) {
-            let new_cursor = clamp_min(data_element.cursor - 1, 0);
-            if new_cursor >= 0 {
+            if !data_element.value.is_empty() {
                 let new_cursor = clamp_min(data_element.cursor - 1, 0);
                 let c = data_element.value.remove(new_cursor);
 
+                println!("{:?} {:?}", c, new_cursor);
+
+                data_element.cursor = new_cursor;
+
                 let mut size: f32 = 0.0;
                 for (pos, c) in data_element.value.chars().enumerate() {
-                    if pos < data_element.cursor {
+                    if pos < new_cursor {
                         let measure = self.font.get(c.to_string());
                         size = (size + (measure.advance * 0.07)).round();
                     }
                 }
-
-                data_element.push_left = clamp_min(size - container, 0.0);
-                data_element.cursor_pos = clamp(size, 0.0, container);
-                data_element.cursor = new_cursor;
             }
         }
     }
