@@ -36,6 +36,7 @@ impl Ddom {
                 cursor_pos: 0.0,
                 push_left: 0.0,
                 stop_backspace: true,
+                cache_len: 0,
             },
         );
     }
