@@ -43,6 +43,7 @@ impl Ddom {
                 cursor: 0,
                 cursor_pos: 0.0,
                 push_left: 0.0,
+                stop_backspace: true,
             },
         );
     }
@@ -75,6 +76,7 @@ impl Ddom {
             } else {
                 data_element.push_left
             };
+            data_element.stop_backspace = false;
         }
     }
 
@@ -137,21 +139,30 @@ impl Ddom {
 
     pub fn backspace(&mut self, id: &usize, container: f32) {
         if let Some(data_element) = self.input_data.get_mut(&(id + 1)) {
-            if !data_element.value.is_empty() {
+            if !data_element.stop_backspace {
                 let new_cursor = clamp_min(data_element.cursor - 1, 0);
-                let c = data_element.value.remove(new_cursor);
+                let c = data_element.value.remove(data_element.cursor - 1);
 
-                println!("{:?} {:?}", c, new_cursor);
-
-                data_element.cursor = new_cursor;
+                data_element.cursor -= 1;
 
                 let mut size: f32 = 0.0;
                 for (pos, c) in data_element.value.chars().enumerate() {
-                    if pos < new_cursor {
+                    if pos < data_element.cursor {
                         let measure = self.font.get(c.to_string());
                         size = (size + (measure.advance * 0.07)).round();
                     }
                 }
+
+                let original = size;
+
+                let measure = self.font.get(c.to_string());
+                data_element.push_left =
+                    clamp_min(data_element.push_left - (measure.advance * 0.07), 0.0).floor();
+
+                size -= data_element.push_left;
+
+                data_element.cursor_pos = clamp(size, 0.0, container - 1.0).floor();
+                data_element.stop_backspace = data_element.cursor == 0;
             }
         }
     }
