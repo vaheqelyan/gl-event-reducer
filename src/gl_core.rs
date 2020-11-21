@@ -51,7 +51,29 @@ impl Gl {
         }
     }
 
+    // TODO REWRITE MEMCPY
     pub fn draw(&mut self, mut buffer: Vec<f32>) {
+        self.vertex_buffer.clear();
+
+        let mut vertex: Vec<f32> = Vec::with_capacity(32_000);
+
+        for i in 0..32_000 / 32 {
+            vertex.append(&mut vec![
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, // ---
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+            ]);
+        }
+        self.vertex_buffer.append(&mut vertex);
+
+        unsafe {
+            ptr::copy_nonoverlapping(
+                self.vertex_buffer.as_ptr(),
+                self.pointer.unwrap() as *mut f32,
+                self.vertex_buffer.len(),
+            );
+        };
+
         self.vertex_buffer.clear();
         self.vertex_buffer.append(&mut buffer);
 

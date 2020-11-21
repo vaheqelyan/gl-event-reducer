@@ -176,11 +176,14 @@ pub fn count_chars(input: &String, cursor: usize, font: &Font, container: f32) -
         size += (measure.advance * 0.07);
     }
 
-    println!("{:?} {:?}", size - container, container);
     clamp_min(size - container, 0.0)
 }
 
-pub fn generate(dom: &Rc<RefCell<Dom>>, resource: &mut Resource) -> Vec<f32> {
+pub fn generate(
+    dom: &Rc<RefCell<Dom>>,
+    resource: &mut Resource,
+    focus_id: Option<usize>,
+) -> Vec<f32> {
     let mut buffer = vec![];
 
     let matrix = glm::ortho(0.0, 300 as f32, 500 as f32, 0.0, -1.0, 1.0);
@@ -201,8 +204,6 @@ pub fn generate(dom: &Rc<RefCell<Dom>>, resource: &mut Resource) -> Vec<f32> {
                 bound.width,
                 bound.height,
             ));
-
-            //let margin_left = count_chars(&input.value, input.cursor, &get_dom.ddom.font, bound.width);
 
             let mut tx = bound.x - input.push_left;
             let s: f32 = 0.07;
@@ -233,16 +234,17 @@ pub fn generate(dom: &Rc<RefCell<Dom>>, resource: &mut Resource) -> Vec<f32> {
                 tx = (tx + (measure.advance * s)).round();
             }
 
-            // Cursor
-            buffer.append(&mut div(
-                xy(bound.x + input.cursor_pos, bound.y),
-                size(1.0, 192.0 * s),
-                rgb(6.0, 95.0, 212.0),
-                layer(0.1),
-                &matrix,
-                bound.width,
-                bound.height,
-            ));
+            if focus_id == Some(*x) {
+                buffer.append(&mut div(
+                    xy(bound.x + input.cursor_pos, bound.y),
+                    size(1.0, 192.0 * s),
+                    rgb(6.0, 95.0, 212.0),
+                    layer(0.1),
+                    &matrix,
+                    bound.width,
+                    bound.height,
+                ));
+            }
         }
     }
 

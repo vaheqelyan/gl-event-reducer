@@ -61,7 +61,7 @@ impl App {
                     element: Element::Input,
                 });
 
-                gl.draw(generate(&self.dom, resource));
+                gl.draw(generate(&self.dom, resource, self.focus));
             }
         }
     }
@@ -82,7 +82,7 @@ impl App {
                     borrow_dom.ddom.input(key, 0, &self.focus.unwrap(), bound);
                 }
 
-                gl.draw(generate(&self.dom, resource));
+                gl.draw(generate(&self.dom, resource, self.focus));
             }
 
             EventFlow::Backspace => {
@@ -93,7 +93,7 @@ impl App {
                     borrow_dom.ddom.backspace(&self.focus.unwrap(), bound);
                 }
 
-                gl.draw(generate(&self.dom, resource));
+                gl.draw(generate(&self.dom, resource, self.focus));
             }
 
             EventFlow::Left => {
@@ -104,7 +104,7 @@ impl App {
                     borrow_dom.ddom.cursor_left(&self.focus.unwrap(), bound);
                 }
 
-                gl.draw(generate(&self.dom, resource));
+                gl.draw(generate(&self.dom, resource, self.focus));
             }
 
             EventFlow::Right => {
@@ -114,7 +114,7 @@ impl App {
 
                     borrow_dom.ddom.cursor_right(&self.focus.unwrap(), bound);
                 }
-                gl.draw(generate(&self.dom, resource));
+                gl.draw(generate(&self.dom, resource, self.focus));
             }
 
             EventFlow::Click => {
