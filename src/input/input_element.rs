@@ -142,8 +142,10 @@ impl Input {
                 let perc = bar / (measure.advance * 0.07);
                 if perc > 0.5 {
                     self.cursor_pos = size - self.push_left;
+                    self.cursor = pos;
                 } else {
                     self.cursor_pos = char_size - self.push_left;
+                    self.cursor = pos + 1;
                 }
                 stop = true;
             }
