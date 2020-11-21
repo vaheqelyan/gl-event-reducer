@@ -169,16 +169,6 @@ pub(crate) fn div(
     ]
 }
 
-pub fn count_chars(input: &String, cursor: usize, font: &Font, container: f32) -> f32 {
-    let mut size: f32 = 0.0;
-    for c in input.chars() {
-        let measure = font.get(c.to_string());
-        size += (measure.advance * 0.07);
-    }
-
-    clamp_min(size - container, 0.0)
-}
-
 pub fn generate(
     dom: &Rc<RefCell<Dom>>,
     resource: &mut Resource,
