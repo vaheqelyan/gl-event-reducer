@@ -1,3 +1,4 @@
+use crate::app::Cursor;
 use crate::dom::Bound;
 use crate::font::Font;
 use std::collections::HashMap;
@@ -62,6 +63,12 @@ impl Ddom {
     pub fn backspace(&mut self, id: &usize, container: f32) {
         if let Some(data_element) = self.input_data.get_mut(&(id + 1)) {
             data_element.backspace(container, &mut self.font);
+        }
+    }
+
+    pub fn focus(&mut self, id: &usize, container: f32, x: f32, y: f32, cursor: &Cursor) {
+        if let Some(data_element) = self.input_data.get_mut(&(id + 1)) {
+            data_element.focus(container, x, y, cursor, &mut self.font);
         }
     }
 }

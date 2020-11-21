@@ -120,12 +120,21 @@ impl App {
             EventFlow::Click => {
                 let element_id = find_bound_xy(&self.cursor, &self.dom);
                 if element_id != None {
-                    let borrow_dom = self.dom.borrow();
+                    let mut borrow_dom = self.dom.borrow_mut();
                     let element = borrow_dom.get(element_id.unwrap());
+                    let bound = borrow_dom.get(element_id.unwrap());
+                    let width = bound.width;
+                    let x = bound.x;
+                    let y = bound.y;
                     if let Element::Input = element.element {
                         self.focus = element_id;
+                        borrow_dom
+                            .ddom
+                            .focus(&self.focus.unwrap(), width, x, y, &self.cursor);
                     }
                 }
+
+                gl.draw(generate(&self.dom, resource, self.focus));
             }
 
             _ => (),
