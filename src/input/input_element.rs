@@ -145,6 +145,7 @@ impl Input {
             let char_size = (size + (measure.advance * 0.07)).round();
 
             if char_size > self.push_left + x_input && !stop {
+                self.focus_range = char_size;
                 let foo = char_size - self.push_left;
                 let bar = foo - x_input;
                 let perc = bar / (measure.advance * 0.07);
@@ -155,7 +156,6 @@ impl Input {
                     self.cursor_pos = char_size - self.push_left;
                     self.cursor = pos + 1;
                 }
-                self.focus_range = char_size;
                 stop = true;
             }
 
@@ -169,27 +169,18 @@ impl Input {
         let screen_width: f32 = 300.0;
         let dir = sign::signum(x_input - self.focus_x);
 
-        /*let mut size: f32 = 0.0;
-        for c in self.value.chars() {
-            let measure = font.get(c.to_string());
-            size = (size + (measure.advance * 0.07)).round();
-        }*/
-        println!("-------");
-
         let mut n_size: f32 = 0.0;
-        let mut push_left: f32 = 0.0;
         let mut x_size: f32 = 0.0;
+        println!("-----------");
 
         // Get width of range
         for c in self.value.chars() {
             let measure = font.get(c.to_string());
             let char_size = (n_size + (measure.advance * 0.07)).round();
-            //println!("{:?} {:?} {:?}", c, dir * char_size > dir * self.focus_range, dir * char_size < (self.focus_range + (x_input - self.focus_range)) * dir);
 
-            if char_size <= (self.focus_range + (x_input - self.focus_range))
-                && char_size >= self.focus_range
+            if char_size >= self.focus_range
+                && char_size <= (self.focus_range + (x_input - self.focus_range)) + self.push_left
             {
-                println!("{:?}", c);
                 if char_size > self.focus_range {
                     x_size = (x_size + (measure.advance * 0.07)).round();
                 }
