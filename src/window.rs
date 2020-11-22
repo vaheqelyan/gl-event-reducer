@@ -121,6 +121,11 @@ impl Window {
                 glfw::WindowEvent::CursorPos(x, y) => {
                     self.app.cursor.x = x as f32;
                     self.app.cursor.y = y as f32;
+                    self.app.dispatch_event(
+                        EventFlow::PointerMove,
+                        &mut self.gl,
+                        &mut self.resource,
+                    )
                 }
                 glfw::WindowEvent::Char(character) => {
                     self.app.dispatch_event(
@@ -158,10 +163,19 @@ impl Window {
                     _ => (),
                 },
                 glfw::WindowEvent::MouseButton(btn, action, ..) => match action {
-                    Action::Press => {}
+                    Action::Press => {
+                        self.app.dispatch_event(
+                            EventFlow::PointerDown,
+                            &mut self.gl,
+                            &mut self.resource,
+                        );
+                    }
                     Action::Release => {
-                        self.app
-                            .dispatch_event(EventFlow::Click, &mut self.gl, &mut self.resource);
+                        self.app.dispatch_event(
+                            EventFlow::PointerUp,
+                            &mut self.gl,
+                            &mut self.resource,
+                        );
                     }
                     Action::Repeat => {}
                 },

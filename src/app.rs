@@ -26,11 +26,14 @@ pub enum Event {
 }
 
 pub enum EventFlow {
-    Click,
     Type(char),
     Backspace,
     Left,
     Right,
+
+    PointerDown,
+    PointerMove,
+    PointerUp,
 }
 
 impl App {
@@ -117,7 +120,7 @@ impl App {
                 gl.draw(generate(&self.dom, resource, self.focus));
             }
 
-            EventFlow::Click => {
+            EventFlow::PointerDown => {
                 let element_id = find_bound_xy(&self.cursor, &self.dom);
                 if element_id != None {
                     let mut borrow_dom = self.dom.borrow_mut();
@@ -133,6 +136,14 @@ impl App {
                             .focus(&self.focus.unwrap(), width, x, y, &self.cursor);
                     }
                 }
+
+                gl.draw(generate(&self.dom, resource, self.focus));
+            }
+
+            EventFlow::PointerMove => if self.focus != None {},
+
+            EventFlow::PointerUp => {
+                self.focus = find_bound_xy(&self.cursor, &self.dom);
 
                 gl.draw(generate(&self.dom, resource, self.focus));
             }
