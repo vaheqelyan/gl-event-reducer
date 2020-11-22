@@ -169,11 +169,12 @@ impl Input {
         let screen_width: f32 = 300.0;
         let dir = sign::signum(x_input - self.focus_x);
 
-        let mut size: f32 = 0.0;
+        /*let mut size: f32 = 0.0;
         for c in self.value.chars() {
             let measure = font.get(c.to_string());
             size = (size + (measure.advance * 0.07)).round();
-        }
+        }*/
+        println!("-------");
 
         let mut n_size: f32 = 0.0;
         let mut push_left: f32 = 0.0;
@@ -183,11 +184,15 @@ impl Input {
         for c in self.value.chars() {
             let measure = font.get(c.to_string());
             let char_size = (n_size + (measure.advance * 0.07)).round();
-            if char_size < self.focus_range + (x_input - self.focus_range)
-                && char_size > self.focus_range
+            //println!("{:?} {:?} {:?}", c, dir * char_size > dir * self.focus_range, dir * char_size < (self.focus_range + (x_input - self.focus_range)) * dir);
+
+            if char_size <= (self.focus_range + (x_input - self.focus_range))
+                && char_size >= self.focus_range
             {
                 println!("{:?}", c);
-                x_size = (x_size + (measure.advance * 0.07)).round();
+                if char_size > self.focus_range {
+                    x_size = (x_size + (measure.advance * 0.07)).round();
+                }
             }
             n_size = char_size;
         }
@@ -205,7 +210,7 @@ impl Input {
 
         // If true substract :else return sam value
         self.push_left = if is_out_of_range {
-            original - container
+            (original - container)
         } else {
             self.push_left
         };
