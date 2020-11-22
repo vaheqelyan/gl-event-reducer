@@ -178,9 +178,11 @@ impl Input {
             let measure = font.get(c.to_string());
             let char_size = (n_size + (measure.advance * 0.07)).round();
 
-            if char_size >= self.focus_range
-                && char_size <= (self.focus_range + (x_input - self.focus_range)) + self.push_left
+            if char_size * dir >= self.focus_range * dir
+                && char_size * dir
+                    < ((self.focus_range + (x_input - self.focus_range)) + self.push_left) * dir
             {
+                println!("{:?}", c);
                 if char_size > self.focus_range {
                     x_size = (x_size + (measure.advance * 0.07)).round();
                 }
