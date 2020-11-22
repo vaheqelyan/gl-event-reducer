@@ -174,11 +174,11 @@ impl Input {
             let measure = font.get(c.to_string());
             size = (size + (measure.advance * 0.07)).round();
         }
-        println!("---");
 
         let mut n_size: f32 = 0.0;
         let mut push_left: f32 = 0.0;
         let mut x_size: f32 = 0.0;
+        println!("----");
 
         for c in self.value.chars() {
             let measure = font.get(c.to_string());
@@ -186,7 +186,8 @@ impl Input {
             if char_size < self.focus_range + (x_input - self.focus_range)
                 && char_size > self.focus_range
             {
-                x_size += (measure.advance * 0.07);
+                println!("{:?}", c);
+                x_size = (x_size + (measure.advance * 0.07)).round();
             }
             n_size = char_size;
         }
