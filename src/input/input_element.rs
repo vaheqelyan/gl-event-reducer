@@ -191,12 +191,7 @@ impl Input {
         }
 
         // Get width of text at cursor
-        let mut z = self.focus_range + x_size;
-
-        // Copy value
-        let original = z;
-        // Substract of push_left
-        z -= self.push_left;
+        let original = self.focus_range + x_size;
 
         // Check if it is out of range
         let is_out_of_range = !((original - container) - self.push_left).is_sign_negative();
