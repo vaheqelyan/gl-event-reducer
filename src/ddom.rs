@@ -32,6 +32,8 @@ impl Ddom {
         self.input_data.insert(
             id,
             Input {
+                focus_range: 0.0,
+                focus_x: 0.0,
                 value: "".to_string(),
                 cursor: 0,
                 cursor_pos: 0.0,
@@ -69,6 +71,12 @@ impl Ddom {
     pub fn focus(&mut self, id: &usize, container: f32, x: f32, y: f32, cursor: &Cursor) {
         if let Some(data_element) = self.input_data.get_mut(&(id + 1)) {
             data_element.focus(container, x, y, cursor, &mut self.font);
+        }
+    }
+
+    pub fn select(&mut self, id: &usize, container: f32, x: f32, y: f32, cursor: &Cursor) {
+        if let Some(data_element) = self.input_data.get_mut(&(id + 1)) {
+            data_element.select(container, x, y, cursor, &mut self.font);
         }
     }
 }

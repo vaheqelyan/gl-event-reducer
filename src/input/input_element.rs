@@ -1,7 +1,7 @@
 use crate::app::Cursor;
 use crate::dom::Bound;
 use crate::font::Font;
-use num_traits::{clamp, clamp_max, clamp_min};
+use num_traits::{clamp, clamp_max, clamp_min, sign};
 
 #[derive(Debug)]
 pub struct Input {
@@ -11,6 +11,8 @@ pub struct Input {
     pub push_left: f32,
     pub stop_backspace: bool,
     pub cache_len: usize,
+    pub focus_x: f32,
+    pub focus_range: f32,
 }
 
 impl Input {
@@ -134,6 +136,8 @@ impl Input {
     pub fn focus(&mut self, container: f32, x: f32, y: f32, cursor: &Cursor, font: &Font) {
         let x_input = cursor.x - x;
 
+        self.focus_x = x_input;
+
         let mut size: f32 = 0.0;
         let mut stop: bool = false;
         for (pos, c) in self.value.chars().enumerate() {
@@ -151,11 +155,53 @@ impl Input {
                     self.cursor_pos = char_size - self.push_left;
                     self.cursor = pos + 1;
                 }
+                self.focus_range = char_size;
                 stop = true;
             }
 
             size = char_size;
         }
         self.stop_backspace = self.cursor == 0;
+    }
+
+    pub fn select(&mut self, container: f32, x: f32, y: f32, cursor: &Cursor, font: &Font) {
+        let x_input = cursor.x - x;
+        let screen_width: f32 = 300.0;
+        let dir = sign::signum(x_input - self.focus_x);
+
+        let mut size: f32 = 0.0;
+        for c in self.value.chars() {
+            let measure = font.get(c.to_string());
+            size = (size + (measure.advance * 0.07)).round();
+        }
+        println!("---");
+
+        let mut n_size: f32 = 0.0;
+        let mut push_left: f32 = 0.0;
+        let mut x_size: f32 = 0.0;
+
+        for c in self.value.chars() {
+            let measure = font.get(c.to_string());
+            let char_size = (n_size + (measure.advance * 0.07)).round();
+            if char_size < self.focus_range + (x_input - self.focus_range)
+                && char_size > self.focus_range
+            {
+                x_size += (measure.advance * 0.07);
+            }
+            n_size = char_size;
+        }
+
+        let mut z = self.focus_range + x_size;
+
+        let original = z;
+        z -= self.push_left;
+
+        let is_out_of_range = !((original - container) - self.push_left).is_sign_negative();
+
+        self.push_left = if is_out_of_range {
+            original - container
+        } else {
+            self.push_left
+        };
     }
 }
