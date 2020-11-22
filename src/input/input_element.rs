@@ -169,14 +169,26 @@ impl Input {
         let screen_width: f32 = 300.0;
         let dir = sign::signum(x_input - self.focus_x);
 
-        let mut n_size: f32 = 0.0;
-        let mut x_size: f32 = 0.0;
+        let mut size: f32 = 0.0;
+        let mut range_size: f32 = 0.0;
         println!("-----------");
 
         // Get width of range
         for c in self.value.chars() {
             let measure = font.get(c.to_string());
-            let char_size = (n_size + (measure.advance * 0.07)).round();
+            let char_size = (size + (measure.advance * 0.07)).round();
+
+            /*println!(
+                "{:?} {:?} {:?} {:?}",
+                c,
+                char_size * dir,
+                self.focus_range * dir,
+                char_size * dir >= self.focus_range * dir
+                    && char_size * dir
+                        < (((self.focus_range + (x_input - self.focus_range)) + self.push_left)
+                            * dir)
+                            .round()
+            );*/
 
             if char_size * dir >= self.focus_range * dir
                 && char_size * dir
@@ -184,14 +196,14 @@ impl Input {
             {
                 println!("{:?}", c);
                 if char_size > self.focus_range {
-                    x_size = (x_size + (measure.advance * 0.07)).round();
+                    range_size = (range_size + (measure.advance * 0.07)).round();
                 }
             }
-            n_size = char_size;
+            size = char_size;
         }
 
         // Get width of text at cursor
-        let original = self.focus_range + x_size;
+        let original = self.focus_range + range_size;
 
         // Check if it is out of range
         let is_out_of_range = !((original - container) - self.push_left).is_sign_negative();
