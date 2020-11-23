@@ -170,7 +170,8 @@ impl Input {
         let dir = sign::signum(x_input - self.focus_x);
 
         let mut size: f32 = 0.0;
-        let mut range_size: f32 = 0.0;
+        let mut front_size: f32 = 0.0;
+        let mut back_size: f32 = 0.0;
         println!("-----------");
 
         // Get width of range
@@ -178,41 +179,39 @@ impl Input {
             let measure = font.get(c.to_string());
             let char_size = (size + (measure.advance * 0.07)).round();
 
-            /*println!(
-                "{:?} {:?} {:?} {:?}",
-                c,
-                char_size * dir,
-                self.focus_range * dir,
-                char_size * dir >= self.focus_range * dir
-                    && char_size * dir
-                        < (((self.focus_range + (x_input - self.focus_range)) + self.push_left)
-                            * dir)
-                            .round()
-            );*/
-
             if char_size * dir >= self.focus_range * dir
                 && char_size * dir
                     < ((self.focus_range + (x_input - self.focus_range)) + self.push_left) * dir
             {
-                println!("{:?}", c);
-                if char_size > self.focus_range {
-                    range_size = (range_size + (measure.advance * 0.07)).round();
+                if char_size * dir > self.focus_range * dir {
+                    front_size = (front_size + (measure.advance * 0.07)).round();
                 }
+                back_size = (back_size + (measure.advance * 0.07)).round();
             }
             size = char_size;
         }
 
-        // Get width of text at cursor
-        let original = self.focus_range + range_size;
+        if dir == 1.0 {
+            // Get width of text at cursor
+            let mut original = self.focus_range + front_size;
 
-        // Check if it is out of range
-        let is_out_of_range = !((original - container) - self.push_left).is_sign_negative();
+            // Check if it is out of range
+            let is_out_of_range = !((original - container) - self.push_left).is_sign_negative();
 
-        // If true substract :else return sam value
-        self.push_left = if is_out_of_range {
-            (original - container)
+            // If true substract :else return sam value
+            self.push_left = if is_out_of_range {
+                (original - container)
+            } else {
+                self.push_left
+            };
         } else {
-            self.push_left
-        };
+            let original = (self.focus_range - back_size) - self.push_left;
+
+            self.push_left = if original.is_sign_negative() {
+                self.push_left - original.abs()
+            } else {
+                self.push_left
+            }
+        }
     }
 }
