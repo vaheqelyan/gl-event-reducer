@@ -14,7 +14,7 @@ use std::ptr;
 use std::str;
 
 const SCR_WIDTH: u32 = 300;
-const SCR_HEIGHT: u32 = 300;
+const SCR_HEIGHT: u32 = 616;
 
 const X: f32 = 0.0;
 const Y: f32 = 0.0;
