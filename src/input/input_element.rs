@@ -172,7 +172,6 @@ impl Input {
         let mut size: f32 = 0.0;
         let mut front_size: f32 = 0.0;
         let mut back_size: f32 = 0.0;
-        println!("-----------");
 
         // Get width of range
         for c in self.value.chars() {
