@@ -16,6 +16,1147 @@ pub fn get_font() -> HashMap<String, Char> {
     char_list.insert(
         "0".to_string(),
         Char {
+            width: 144.0,
+            height: 203.0,
+            originX: 1.0,
+            originY: 190.0,
+            advance: 142.0,
+            path: "text/48.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "1".to_string(),
+        Char {
+            width: 132.0,
+            height: 198.0,
+            originX: -9.0,
+            originY: 187.0,
+            advance: 142.0,
+            path: "text/49.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "2".to_string(),
+        Char {
+            width: 139.0,
+            height: 201.0,
+            originX: -2.0,
+            originY: 190.0,
+            advance: 142.0,
+            path: "text/50.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "3".to_string(),
+        Char {
+            width: 144.0,
+            height: 203.0,
+            originX: 1.0,
+            originY: 190.0,
+            advance: 142.0,
+            path: "text/51.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "4".to_string(),
+        Char {
+            width: 151.0,
+            height: 198.0,
+            originX: 5.0,
+            originY: 187.0,
+            advance: 142.0,
+            path: "text/52.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "5".to_string(),
+        Char {
+            width: 144.0,
+            height: 201.0,
+            originX: 1.0,
+            originY: 187.0,
+            advance: 142.0,
+            path: "text/53.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "6".to_string(),
+        Char {
+            width: 140.0,
+            height: 203.0,
+            originX: -2.0,
+            originY: 190.0,
+            advance: 142.0,
+            path: "text/54.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "7".to_string(),
+        Char {
+            width: 138.0,
+            height: 198.0,
+            originX: -2.0,
+            originY: 187.0,
+            advance: 142.0,
+            path: "text/55.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "8".to_string(),
+        Char {
+            width: 142.0,
+            height: 203.0,
+            originX: 0.0,
+            originY: 190.0,
+            advance: 142.0,
+            path: "text/56.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "9".to_string(),
+        Char {
+            width: 140.0,
+            height: 203.0,
+            originX: -1.0,
+            originY: 190.0,
+            advance: 142.0,
+            path: "text/57.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        " ".to_string(),
+        Char {
+            width: 22.0,
+            height: 22.0,
+            originX: 11.0,
+            originY: 11.0,
+            advance: 71.0,
+            path: "text/32.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "!".to_string(),
+        Char {
+            width: 47.0,
+            height: 198.0,
+            originX: -12.0,
+            originY: 187.0,
+            advance: 71.0,
+            path: "text/33.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        '"'.to_string(),
+        Char {
+            width: 91.0,
+            height: 78.0,
+            originX: 0.0,
+            originY: 187.0,
+            advance: 91.0,
+            path: "text/34.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "#".to_string(),
+        Char {
+            width: 162.0,
+            height: 197.0,
+            originX: 10.0,
+            originY: 186.0,
+            advance: 142.0,
+            path: "text/35.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "$".to_string(),
+        Char {
+            width: 158.0,
+            height: 229.0,
+            originX: 8.0,
+            originY: 200.0,
+            advance: 142.0,
+            path: "text/36.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "%".to_string(),
+        Char {
+            width: 231.0,
+            height: 201.0,
+            originX: 2.0,
+            originY: 189.0,
+            advance: 227.0,
+            path: "text/37.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "&".to_string(),
+        Char {
+            width: 180.0,
+            height: 202.0,
+            originX: 2.0,
+            originY: 188.0,
+            advance: 171.0,
+            path: "text/38.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "'".to_string(),
+        Char {
+            width: 45.0,
+            height: 78.0,
+            originX: -2.0,
+            originY: 187.0,
+            advance: 49.0,
+            path: "text/39.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "(".to_string(),
+        Char {
+            width: 90.0,
+            height: 260.0,
+            originX: -5.0,
+            originY: 196.0,
+            advance: 85.0,
+            path: "text/40.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        ")".to_string(),
+        Char {
+            width: 90.0,
+            height: 260.0,
+            originX: 9.0,
+            originY: 196.0,
+            advance: 85.0,
+            path: "text/41.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "*".to_string(),
+        Char {
+            width: 114.0,
+            height: 112.0,
+            originX: 7.0,
+            originY: 187.0,
+            advance: 99.0,
+            path: "text/42.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "+".to_string(),
+        Char {
+            width: 146.0,
+            height: 147.0,
+            originX: -2.0,
+            originY: 159.0,
+            advance: 149.0,
+            path: "text/43.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        ",".to_string(),
+        Char {
+            width: 47.0,
+            height: 82.0,
+            originX: -12.0,
+            originY: 38.0,
+            advance: 71.0,
+            path: "text/44.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "-".to_string(),
+        Char {
+            width: 85.0,
+            height: 42.0,
+            originX: 0.0,
+            originY: 89.0,
+            advance: 85.0,
+            path: "text/45.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        ".".to_string(),
+        Char {
+            width: 47.0,
+            height: 49.0,
+            originX: -12.0,
+            originY: 38.0,
+            advance: 71.0,
+            path: "text/46.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "/".to_string(),
+        Char {
+            width: 93.0,
+            height: 210.0,
+            originX: 11.0,
+            originY: 196.0,
+            advance: 71.0,
+            path: "text/47.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        ":".to_string(),
+        Char {
+            width: 47.0,
+            height: 157.0,
+            originX: -12.0,
+            originY: 146.0,
+            advance: 71.0,
+            path: "text/58.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        ";".to_string(),
+        Char {
+            width: 47.0,
+            height: 190.0,
+            originX: -12.0,
+            originY: 146.0,
+            advance: 71.0,
+            path: "text/59.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "<".to_string(),
+        Char {
+            width: 146.0,
+            height: 152.0,
+            originX: -2.0,
+            originY: 160.0,
+            advance: 149.0,
+            path: "text/60.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "=".to_string(),
+        Char {
+            width: 146.0,
+            height: 104.0,
+            originX: -2.0,
+            originY: 136.0,
+            advance: 149.0,
+            path: "text/61.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        ">".to_string(),
+        Char {
+            width: 146.0,
+            height: 152.0,
+            originX: -2.0,
+            originY: 160.0,
+            advance: 149.0,
+            path: "text/62.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "?".to_string(),
+        Char {
+            width: 144.0,
+            height: 201.0,
+            originX: 0.0,
+            originY: 190.0,
+            advance: 142.0,
+            path: "text/63.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "@".to_string(),
+        Char {
+            width: 240.0,
+            height: 243.0,
+            originX: -9.0,
+            originY: 196.0,
+            advance: 260.0,
+            path: "text/64.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "A".to_string(),
+        Char {
+            width: 192.0,
+            height: 198.0,
+            originX: 10.0,
+            originY: 187.0,
+            advance: 171.0,
+            path: "text/65.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "B".to_string(),
+        Char {
+            width: 158.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 171.0,
+            path: "text/66.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "C".to_string(),
+        Char {
+            width: 184.0,
+            height: 203.0,
+            originX: -2.0,
+            originY: 190.0,
+            advance: 185.0,
+            path: "text/67.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "D".to_string(),
+        Char {
+            width: 174.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 185.0,
+            path: "text/68.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "E".to_string(),
+        Char {
+            width: 161.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 171.0,
+            path: "text/69.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "F".to_string(),
+        Char {
+            width: 147.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 156.0,
+            path: "text/70.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "G".to_string(),
+        Char {
+            width: 189.0,
+            height: 203.0,
+            originX: -2.0,
+            originY: 190.0,
+            advance: 199.0,
+            path: "text/71.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "H".to_string(),
+        Char {
+            width: 165.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 185.0,
+            path: "text/72.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "I".to_string(),
+        Char {
+            width: 46.0,
+            height: 198.0,
+            originX: -13.0,
+            originY: 187.0,
+            advance: 71.0,
+            path: "text/73.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "J".to_string(),
+        Char {
+            width: 127.0,
+            height: 201.0,
+            originX: 7.0,
+            originY: 187.0,
+            advance: 128.0,
+            path: "text/74.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "K".to_string(),
+        Char {
+            width: 169.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 171.0,
+            path: "text/75.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "L".to_string(),
+        Char {
+            width: 135.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 142.0,
+            path: "text/76.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "M".to_string(),
+        Char {
+            width: 193.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 213.0,
+            path: "text/77.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "N".to_string(),
+        Char {
+            width: 165.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 185.0,
+            path: "text/78.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "O".to_string(),
+        Char {
+            width: 197.0,
+            height: 203.0,
+            originX: -1.0,
+            originY: 190.0,
+            advance: 199.0,
+            path: "text/79.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "P".to_string(),
+        Char {
+            width: 158.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 171.0,
+            path: "text/80.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "Q".to_string(),
+        Char {
+            width: 197.0,
+            height: 249.0,
+            originX: -1.0,
+            originY: 190.0,
+            advance: 199.0,
+            path: "text/81.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "R".to_string(),
+        Char {
+            width: 174.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 185.0,
+            path: "text/82.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "S".to_string(),
+        Char {
+            width: 169.0,
+            height: 203.0,
+            originX: -1.0,
+            originY: 190.0,
+            advance: 171.0,
+            path: "text/83.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "T".to_string(),
+        Char {
+            width: 167.0,
+            height: 198.0,
+            originX: 5.0,
+            originY: 187.0,
+            advance: 156.0,
+            path: "text/84.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "U".to_string(),
+        Char {
+            width: 168.0,
+            height: 201.0,
+            originX: -9.0,
+            originY: 187.0,
+            advance: 185.0,
+            path: "text/85.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "V".to_string(),
+        Char {
+            width: 191.0,
+            height: 198.0,
+            originX: 10.0,
+            originY: 187.0,
+            advance: 171.0,
+            path: "text/86.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "W".to_string(),
+        Char {
+            width: 262.0,
+            height: 198.0,
+            originX: 10.0,
+            originY: 187.0,
+            advance: 241.0,
+            path: "text/87.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "X".to_string(),
+        Char {
+            width: 182.0,
+            height: 198.0,
+            originX: 5.0,
+            originY: 187.0,
+            advance: 171.0,
+            path: "text/88.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "Y".to_string(),
+        Char {
+            width: 182.0,
+            height: 198.0,
+            originX: 5.0,
+            originY: 187.0,
+            advance: 171.0,
+            path: "text/89.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "Z".to_string(),
+        Char {
+            width: 162.0,
+            height: 198.0,
+            originX: 3.0,
+            originY: 187.0,
+            advance: 156.0,
+            path: "text/90.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "[".to_string(),
+        Char {
+            width: 73.0,
+            height: 261.0,
+            originX: -7.0,
+            originY: 196.0,
+            advance: 71.0,
+            path: "text/91.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "\\".to_string(),
+        Char {
+            width: 93.0,
+            height: 210.0,
+            originX: 11.0,
+            originY: 196.0,
+            advance: 71.0,
+            path: "text/92.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "]".to_string(),
+        Char {
+            width: 73.0,
+            height: 261.0,
+            originX: 9.0,
+            originY: 196.0,
+            advance: 71.0,
+            path: "text/93.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "^".to_string(),
+        Char {
+            width: 140.0,
+            height: 114.0,
+            originX: 10.0,
+            originY: 187.0,
+            advance: 120.0,
+            path: "text/94.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "_".to_string(),
+        Char {
+            width: 171.0,
+            height: 38.0,
+            originX: 15.0,
+            originY: -24.0,
+            advance: 142.0,
+            path: "text/95.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "`".to_string(),
+        Char {
+            width: 75.0,
+            height: 60.0,
+            originX: -2.0,
+            originY: 199.0,
+            advance: 85.0,
+            path: "text/96.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "a".to_string(),
+        Char {
+            width: 154.0,
+            height: 162.0,
+            originX: 0.0,
+            originY: 149.0,
+            advance: 142.0,
+            path: "text/97.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "b".to_string(),
+        Char {
+            width: 137.0,
+            height: 210.0,
+            originX: -6.0,
+            originY: 196.0,
+            advance: 142.0,
+            path: "text/98.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "c".to_string(),
+        Char {
+            width: 133.0,
+            height: 162.0,
+            originX: 0.0,
+            originY: 149.0,
+            advance: 128.0,
+            path: "text/99.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "d".to_string(),
+        Char {
+            width: 137.0,
+            height: 210.0,
+            originX: 0.0,
+            originY: 196.0,
+            advance: 142.0,
+            path: "text/100.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "e".to_string(),
+        Char {
+            width: 142.0,
+            height: 162.0,
+            originX: 0.0,
+            originY: 149.0,
+            advance: 142.0,
+            path: "text/101.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "f".to_string(),
+        Char {
+            width: 90.0,
+            height: 207.0,
+            originX: 7.0,
+            originY: 196.0,
+            advance: 71.0,
+            path: "text/102.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "g".to_string(),
+        Char {
+            width: 137.0,
+            height: 213.0,
+            originX: 0.0,
+            originY: 148.0,
+            advance: 142.0,
+            path: "text/103.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "h".to_string(),
+        Char {
+            width: 130.0,
+            height: 207.0,
+            originX: -7.0,
+            originY: 196.0,
+            advance: 142.0,
+            path: "text/104.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "i".to_string(),
+        Char {
+            width: 45.0,
+            height: 207.0,
+            originX: -6.0,
+            originY: 196.0,
+            advance: 57.0,
+            path: "text/105.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "j".to_string(),
+        Char {
+            width: 68.0,
+            height: 261.0,
+            originX: 17.0,
+            originY: 196.0,
+            advance: 57.0,
+            path: "text/106.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "k".to_string(),
+        Char {
+            width: 133.0,
+            height: 207.0,
+            originX: -6.0,
+            originY: 196.0,
+            advance: 128.0,
+            path: "text/107.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "l".to_string(),
+        Char {
+            width: 45.0,
+            height: 207.0,
+            originX: -6.0,
+            originY: 196.0,
+            advance: 57.0,
+            path: "text/108.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "m".to_string(),
+        Char {
+            width: 201.0,
+            height: 160.0,
+            originX: -6.0,
+            originY: 149.0,
+            advance: 213.0,
+            path: "text/109.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "n".to_string(),
+        Char {
+            width: 131.0,
+            height: 160.0,
+            originX: -6.0,
+            originY: 149.0,
+            advance: 142.0,
+            path: "text/110.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "o".to_string(),
+        Char {
+            width: 143.0,
+            height: 162.0,
+            originX: 0.0,
+            originY: 149.0,
+            advance: 142.0,
+            path: "text/111.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "p".to_string(),
+        Char {
+            width: 137.0,
+            height: 213.0,
+            originX: -6.0,
+            originY: 149.0,
+            advance: 142.0,
+            path: "text/112.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "q".to_string(),
+        Char {
+            width: 137.0,
+            height: 213.0,
+            originX: 0.0,
+            originY: 149.0,
+            advance: 142.0,
+            path: "text/113.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "r".to_string(),
+        Char {
+            width: 86.0,
+            height: 160.0,
+            originX: -6.0,
+            originY: 149.0,
+            advance: 85.0,
+            path: "text/114.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "s".to_string(),
+        Char {
+            width: 134.0,
+            height: 162.0,
+            originX: 4.0,
+            originY: 148.0,
+            advance: 128.0,
+            path: "text/115.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "t".to_string(),
+        Char {
+            width: 88.0,
+            height: 189.0,
+            originX: 7.0,
+            originY: 176.0,
+            advance: 71.0,
+            path: "text/116.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "u".to_string(),
+        Char {
+            width: 131.0,
+            height: 160.0,
+            originX: -6.0,
+            originY: 146.0,
+            advance: 142.0,
+            path: "text/117.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "v".to_string(),
+        Char {
+            width: 149.0,
+            height: 157.0,
+            originX: 10.0,
+            originY: 146.0,
+            advance: 128.0,
+            path: "text/118.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "w".to_string(),
+        Char {
+            width: 208.0,
+            height: 157.0,
+            originX: 11.0,
+            originY: 146.0,
+            advance: 185.0,
+            path: "text/119.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "x".to_string(),
+        Char {
+            width: 145.0,
+            height: 157.0,
+            originX: 8.0,
+            originY: 146.0,
+            advance: 128.0,
+            path: "text/120.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "y".to_string(),
+        Char {
+            width: 149.0,
+            height: 211.0,
+            originX: 10.0,
+            originY: 146.0,
+            advance: 128.0,
+            path: "text/121.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "z".to_string(),
+        Char {
+            width: 127.0,
+            height: 157.0,
+            originX: 1.0,
+            originY: 146.0,
+            advance: 128.0,
+            path: "text/122.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "{".to_string(),
+        Char {
+            width: 99.0,
+            height: 261.0,
+            originX: 7.0,
+            originY: 196.0,
+            advance: 85.0,
+            path: "text/123.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "|".to_string(),
+        Char {
+            width: 43.0,
+            height: 262.0,
+            originX: -12.0,
+            originY: 196.0,
+            advance: 66.0,
+            path: "text/124.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "}".to_string(),
+        Char {
+            width: 99.0,
+            height: 261.0,
+            originX: 7.0,
+            originY: 196.0,
+            advance: 85.0,
+            path: "text/125.png".to_string(),
+            layer: 0,
+        },
+    );
+    char_list.insert(
+        "~".to_string(),
+        Char {
+            width: 148.0,
+            height: 54.0,
+            originX: -1.0,
+            originY: 112.0,
+            advance: 149.0,
+            path: "text/126.png".to_string(),
+            layer: 0,
+        },
+    );
+    /*let mut char_list = HashMap::new();
+    char_list.insert(
+        "0".to_string(),
+        Char {
             width: 134.0,
             height: 191.0,
             originX: -3.0,
@@ -496,11 +1637,11 @@ pub fn get_font() -> HashMap<String, Char> {
     char_list.insert(
         "H".to_string(),
         Char {
-            width: 154.0,
-            height: 186.0,
-            originX: -14.0,
-            originY: 179.0,
-            advance: 180.0,
+            width: 165.0,
+            height: 198.0,
+            originX: -10.0,
+            originY: 187.0,
+            advance: 185.0,
             path: "text/72.png".to_string(),
             layer: 0,
         },
@@ -844,8 +1985,8 @@ pub fn get_font() -> HashMap<String, Char> {
     char_list.insert(
         "e".to_string(),
         Char {
-            width: 131.0,
-            height: 151.0,
+            width: 143.0,
+            height: 163.0,
             originX: -4.0,
             originY: 141.0,
             advance: 139.0,
@@ -1152,8 +2293,8 @@ pub fn get_font() -> HashMap<String, Char> {
             path: "text/126.png".to_string(),
             layer: 0,
         },
-    );
-
+    );*/
+    
     char_list
 }
 
