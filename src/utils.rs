@@ -109,9 +109,7 @@ pub fn make_index(elements_count: u32) -> Vec<u32> {
     x
 }
 
-pub(crate) fn c(u: f32, v: f32, w: f32, h: f32) -> (f32, f32) {
-    //(u,v)
-    //(u/5.0,v/5.0)
+pub(crate) fn c(u: f32, v: f32, w: f32, h: f32, x: bool) -> (f32, f32) {
     (u / (325.0 / w), v / (325.0 / h))
 }
 
@@ -139,6 +137,7 @@ pub(crate) fn div(
     matrix: &glm::TMat4<f32>,
     original_w: f32,
     original_h: f32,
+    xx: bool,
 ) -> Vec<f32> {
     let r = rgb[0] * RGB_FACTOR;
     let g = rgb[1] * RGB_FACTOR;
@@ -151,21 +150,56 @@ pub(crate) fn div(
     let w = size[0];
     let h = size[1];
 
-    let t1 = matrix * glm::vec4(x, y, 0.0, 1.0);
-    let t2 = matrix * glm::vec4(x + w, y, 0.0, 1.0);
-    let t3 = matrix * glm::vec4(x + w, y + h, 0.0, 1.0);
-    let t4 = matrix * glm::vec4(x, y + h, 0.0, 1.0);
+    //let t1 = matrix * glm::vec4(x, y, 0.0, 1.0);
+    //let t2 = matrix * glm::vec4(x + w, y, 0.0, 1.0);
+    //let t3 = matrix * glm::vec4(x + w, y + h, 0.0, 1.0);
+    //let t4 = matrix * glm::vec4(x, y + h, 0.0, 1.0);
 
-    let uv1 = c(0.0, 0.0, original_w, original_h);
-    let uv2 = c(1.0, 0.0, original_w, original_h);
-    let uv3 = c(1.0, 1.0, original_w, original_h);
-    let uv4 = c(0.0, 1.0, original_w, original_h);
+    let uv1 = c(0.0, 0.0, original_w, original_h, xx);
+    let uv2 = c(1.0, 0.0, original_w, original_h, xx);
+    let uv3 = c(1.0, 1.0, original_w, original_h, xx);
+    let uv4 = c(0.0, 1.0, original_w, original_h, xx);
 
-    vec![
+    /*vec![
         t1.x, t1.y, uv1.0, uv1.0, layer, r, g, b, // ---
         t2.x, t2.y, uv2.0, uv2.1, layer, r, g, b, // ---
         t3.x, t3.y, uv3.0, uv3.1, layer, r, g, b, // ---
         t4.x, t4.y, uv4.0, uv4.1, layer, r, g, b,
+    ]*/
+
+    vec![
+        x,
+        y,
+        uv1.0,
+        uv1.1,
+        layer,
+        r,
+        g,
+        b,
+        x + w,
+        y,
+        uv2.0,
+        uv2.1,
+        layer,
+        r,
+        g,
+        b,
+        x + w,
+        y + h,
+        uv3.0,
+        uv3.1,
+        layer,
+        r,
+        g,
+        b,
+        x,
+        y + h,
+        uv4.0,
+        uv4.1,
+        layer,
+        r,
+        g,
+        b,
     ]
 }
 
@@ -176,7 +210,7 @@ pub fn generate(
 ) -> Vec<f32> {
     let mut buffer = vec![];
 
-    let matrix = glm::ortho(0.0, 300 as f32, 500 as f32, 0.0, -1.0, 1.0);
+    let matrix = glm::ortho(0.0, 300 as f32, 722 as f32, 0.0, -1.0, 1.0);
 
     for x in &dom.borrow().vec {
         let get_dom = dom.borrow();
@@ -193,33 +227,34 @@ pub fn generate(
                 &matrix,
                 bound.width,
                 bound.height,
+                false,
             ));
 
             let mut tx = bound.x - input.push_left;
             let s: f32 = 0.07;
-            let mut ty = bound.y + 192.0 * s;
+            let mut ty = bound.y + 200.0 * s;
 
             for l in input.value.chars() {
                 let is_empty = l == ' ';
+
                 let measure = get_dom.ddom.font.get(l.to_string());
-                let get_layer = if is_empty {
-                    0.1
-                } else {
-                    resource.get_layer_id(&measure.path)
-                };
+                if !is_empty {
+                    let get_layer = resource.get_layer_id(&measure.path);
 
-                let mut x2 = (tx - (measure.originX * s));
-                let mut y2 = (ty - (measure.originY * s));
+                    let mut x2 = (tx - (measure.originX * s)).floor();
+                    let mut y2 = (ty - (measure.originY * s)).floor();
 
-                buffer.append(&mut div(
-                    xy(x2, y2),
-                    size(measure.width * s, measure.height * s),
-                    rgb(0.0, 0.0, 0.0),
-                    layer(get_layer),
-                    &matrix,
-                    measure.width,
-                    measure.height,
-                ));
+                    buffer.append(&mut div(
+                        xy(x2, y2),
+                        size(measure.width * s, measure.height * s),
+                        rgb(0.0, 0.0, 0.0),
+                        layer(get_layer),
+                        &matrix,
+                        measure.width,
+                        measure.height,
+                        true,
+                    ));
+                }
 
                 tx = (tx + (measure.advance * s)).round();
             }
@@ -233,6 +268,7 @@ pub fn generate(
                     &matrix,
                     bound.width,
                     bound.height,
+                    false,
                 ));
             }
         }

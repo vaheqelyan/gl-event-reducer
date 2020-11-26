@@ -11,7 +11,7 @@ pub(crate) const VERTEX_SOURCE: &str = r#"
 
             void main()
             {
-                gl_Position = vec4(position.x, position.y, 0.0, 1.0);
+                gl_Position = MVP * vec4(position.x, position.y, 0.0, 1.0);
                 uv = texCoord;
                 layer_get = layer;
                 color = rgb;
@@ -20,8 +20,6 @@ pub(crate) const VERTEX_SOURCE: &str = r#"
 
 pub(crate) const FRAGMENT_SOURCE: &str = r#"
 #version 430 core
-
-precision highp float;
 
 out vec4 frag_color;
 
@@ -42,6 +40,8 @@ vec4 t1 = texture(textureArray, vec3(uv, layer_get));
 float w = 1.0 * length ( vec2 ( dFdx ( t1.r ) , dFdy ( t1.r )) );
 float a = smoothstep(0.5 - w, 0.5 + w, t1.r);
 
+
+//frag_color = t1;
 frag_color = vec4(0.0, 0.0, 0.0, a);
   }
 
