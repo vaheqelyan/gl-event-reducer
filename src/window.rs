@@ -23,9 +23,6 @@ use crate::gl_core::Gl;
 
 const RGB_FACTOR: f32 = 1.0 / 255.0;
 
-const SCR_WIDTH: u32 = 300;
-const SCR_HEIGHT: u32 = 300;
-
 const X: f32 = 0.0;
 const Y: f32 = 0.0;
 
