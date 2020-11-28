@@ -143,7 +143,7 @@ impl Input {
         let mut stop: bool = false;
         for (pos, c) in self.value.chars().enumerate() {
             let measure = font.get(c.to_string());
-            let char_size = (size + (measure.advance * 0.5)).round();
+            let char_size = (size + (measure.advance * 0.5));
 
             if char_size > self.push_left + x_input && !stop {
                 self.focus_range = char_size;
