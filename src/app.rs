@@ -169,7 +169,7 @@ impl App {
                         .select(&self.focus.unwrap(), width, x, y, &self.cursor);
                 }
 
-                gl.draw(generate(&self.dom, resource, self.focus));
+                //gl.draw(generate(&self.dom, resource, self.focus));
             }
 
             EventFlow::PointerUp => {
@@ -177,7 +177,7 @@ impl App {
                 self.event_state.pointermove = false;
                 self.focus = find_bound_xy(&self.cursor, &self.dom);
 
-                gl.draw(generate(&self.dom, resource, self.focus));
+                //gl.draw(generate(&self.dom, resource, self.focus));
             }
 
             _ => (),

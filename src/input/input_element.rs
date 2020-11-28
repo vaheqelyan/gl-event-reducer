@@ -27,7 +27,8 @@ impl Input {
         for (pos, c) in self.value.chars().enumerate() {
             if pos < self.cursor {
                 let measure = font.get(c.to_string());
-                size = (size + (measure.advance * 0.5)).round();
+
+                size = (size + (measure.advance * 0.5));
             }
 
             self.cache_len += 1;
@@ -41,7 +42,7 @@ impl Input {
         let is_out_of_range = !((original - container) - self.push_left).is_sign_negative();
 
         self.push_left = if is_out_of_range {
-            original - container
+            (original - container)
         } else {
             self.push_left
         };
@@ -55,7 +56,7 @@ impl Input {
             if pos < self.cursor + 1 {
                 let measure = font.get(c.to_string());
 
-                size = (size + (measure.advance * 0.5)).round();
+                size = (size + (measure.advance * 0.5));
             }
         }
 
@@ -84,7 +85,7 @@ impl Input {
                 if pos < self.cursor - 1 {
                     let measure = font.get(c.to_string());
 
-                    size = (size + (measure.advance * 0.5)).round();
+                    size = (size + (measure.advance * 0.5));
                 }
             }
 
@@ -115,20 +116,20 @@ impl Input {
             for (pos, c) in self.value.chars().enumerate() {
                 if pos < self.cursor {
                     let measure = font.get(c.to_string());
-                    size = (size + (measure.advance * 0.5)).round();
+                    size = (size + (measure.advance * 0.5));
                 }
             }
 
             let original = size;
 
             let measure = font.get(c.to_string());
-            self.push_left = clamp_min(self.push_left - (measure.advance * 0.5), 0.0).floor();
+            self.push_left = clamp_min(self.push_left - (measure.advance * 0.5), 0.0);
 
             size -= self.push_left;
 
             self.cache_len -= 1;
 
-            self.cursor_pos = clamp(size, 0.0, container - 1.0).floor();
+            self.cursor_pos = clamp(size, 0.0, container - 1.0);
             self.stop_backspace = self.cursor == 0;
         }
     }
@@ -176,16 +177,16 @@ impl Input {
         // Get width of range
         for c in self.value.chars() {
             let measure = font.get(c.to_string());
-            let char_size = (size + (measure.advance * 0.5)).round();
+            let char_size = (size + (measure.advance * 0.5));
 
             if char_size * dir >= self.focus_range * dir
                 && char_size * dir
                     < ((self.focus_range + (x_input - self.focus_range)) + self.push_left) * dir
             {
                 if char_size * dir > self.focus_range * dir {
-                    front_size = (front_size + (measure.advance * 0.5)).round();
+                    front_size = (front_size + (measure.advance * 0.5));
                 }
-                back_size = (back_size + (measure.advance * 0.5)).round();
+                back_size = (back_size + (measure.advance * 0.5));
             }
             size = char_size;
         }

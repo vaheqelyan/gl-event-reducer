@@ -222,7 +222,7 @@ pub fn generate(
             buffer.append(&mut div(
                 xy(bound.x, bound.y),
                 size(bound.width, bound.height),
-                rgb(241.0,243.0,244.0),
+                rgb(241.0, 243.0, 244.0),
                 layer(0.1),
                 &matrix,
                 bound.width,
@@ -241,8 +241,8 @@ pub fn generate(
                 if !is_empty {
                     let get_layer = resource.get_layer_id(&measure.path);
 
-                    let mut x2 = (tx - (measure.originX * s)).floor();
-                    let mut y2 = (ty - (measure.originY * s)).floor();
+                    let mut x2 = (tx - (measure.originX * s));
+                    let mut y2 = (ty - (measure.originY * s));
 
                     buffer.append(&mut div(
                         xy(x2, y2),
@@ -255,9 +255,9 @@ pub fn generate(
                         true,
                     ));
                 }
-
-                tx = (tx + (measure.advance * s)).round();
+                tx = (tx + (measure.advance * s));
             }
+            //println!("utils {:?}", (tx - 10.0) + input.push_left);
 
             if focus_id == Some(*x) {
                 buffer.append(&mut div(
