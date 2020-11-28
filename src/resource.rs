@@ -1099,6 +1099,8 @@ impl Resource {
     pub fn load(&mut self) {
         if !self.loaded {
             for (key, file) in &mut self.map {
+
+                //println!("{:?} {:?}", Path::new(&file.src).exists(), file.src);
                 if &file.src.is_empty() != &true {
                     let img = image::open(&Path::new(&file.src)).unwrap();
 

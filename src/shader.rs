@@ -29,6 +29,9 @@ in float layer_get;
 
 layout(binding = 0) uniform sampler2DArray textureArray;
 
+const float width = 0.4;
+const float edge = 0.2;
+
 void main() {
 
   if (layer_get == 0.1) {
@@ -37,11 +40,8 @@ void main() {
 
 vec4 t1 = texture(textureArray, vec3(uv, layer_get));
 
-float w = 1.0 * length ( vec2 ( dFdx ( t1.r ) , dFdy ( t1.r )) );
-float a = smoothstep(0.5 - w, 0.5 + w, t1.r);
+float a = smoothstep(width, width + edge, t1.r);
 
-
-//frag_color = t1;
 frag_color = vec4(0.0, 0.0, 0.0, a);
   }
 

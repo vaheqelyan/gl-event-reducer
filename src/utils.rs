@@ -222,7 +222,7 @@ pub fn generate(
             buffer.append(&mut div(
                 xy(bound.x, bound.y),
                 size(bound.width, bound.height),
-                rgb(179.0, 179.0, 255.0),
+                rgb(241.0,243.0,244.0),
                 layer(0.1),
                 &matrix,
                 bound.width,
@@ -231,8 +231,8 @@ pub fn generate(
             ));
 
             let mut tx = bound.x - input.push_left;
-            let s: f32 = 0.07;
-            let mut ty = bound.y + 200.0 * s;
+            let s: f32 = 0.5;
+            let mut ty = bound.y + 30.0 * s;
 
             for l in input.value.chars() {
                 let is_empty = l == ' ';
@@ -262,7 +262,7 @@ pub fn generate(
             if focus_id == Some(*x) {
                 buffer.append(&mut div(
                     xy(bound.x + input.cursor_pos, bound.y),
-                    size(1.0, 192.0 * s),
+                    size(1.0, 30.0 * s),
                     rgb(6.0, 95.0, 212.0),
                     layer(0.1),
                     &matrix,

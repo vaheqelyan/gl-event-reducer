@@ -27,7 +27,7 @@ impl Input {
         for (pos, c) in self.value.chars().enumerate() {
             if pos < self.cursor {
                 let measure = font.get(c.to_string());
-                size = (size + (measure.advance * 0.07)).round();
+                size = (size + (measure.advance * 0.5)).round();
             }
 
             self.cache_len += 1;
@@ -55,7 +55,7 @@ impl Input {
             if pos < self.cursor + 1 {
                 let measure = font.get(c.to_string());
 
-                size = (size + (measure.advance * 0.07)).round();
+                size = (size + (measure.advance * 0.5)).round();
             }
         }
 
@@ -84,7 +84,7 @@ impl Input {
                 if pos < self.cursor - 1 {
                     let measure = font.get(c.to_string());
 
-                    size = (size + (measure.advance * 0.07)).round();
+                    size = (size + (measure.advance * 0.5)).round();
                 }
             }
 
@@ -115,14 +115,14 @@ impl Input {
             for (pos, c) in self.value.chars().enumerate() {
                 if pos < self.cursor {
                     let measure = font.get(c.to_string());
-                    size = (size + (measure.advance * 0.07)).round();
+                    size = (size + (measure.advance * 0.5)).round();
                 }
             }
 
             let original = size;
 
             let measure = font.get(c.to_string());
-            self.push_left = clamp_min(self.push_left - (measure.advance * 0.07), 0.0).floor();
+            self.push_left = clamp_min(self.push_left - (measure.advance * 0.5), 0.0).floor();
 
             size -= self.push_left;
 
@@ -142,13 +142,13 @@ impl Input {
         let mut stop: bool = false;
         for (pos, c) in self.value.chars().enumerate() {
             let measure = font.get(c.to_string());
-            let char_size = (size + (measure.advance * 0.07)).round();
+            let char_size = (size + (measure.advance * 0.5)).round();
 
             if char_size > self.push_left + x_input && !stop {
                 self.focus_range = char_size;
                 let foo = char_size - self.push_left;
                 let bar = foo - x_input;
-                let perc = bar / (measure.advance * 0.07);
+                let perc = bar / (measure.advance * 0.5);
                 if perc > 0.5 {
                     self.cursor_pos = size - self.push_left;
                     self.cursor = pos;
@@ -176,16 +176,16 @@ impl Input {
         // Get width of range
         for c in self.value.chars() {
             let measure = font.get(c.to_string());
-            let char_size = (size + (measure.advance * 0.07)).round();
+            let char_size = (size + (measure.advance * 0.5)).round();
 
             if char_size * dir >= self.focus_range * dir
                 && char_size * dir
                     < ((self.focus_range + (x_input - self.focus_range)) + self.push_left) * dir
             {
                 if char_size * dir > self.focus_range * dir {
-                    front_size = (front_size + (measure.advance * 0.07)).round();
+                    front_size = (front_size + (measure.advance * 0.5)).round();
                 }
-                back_size = (back_size + (measure.advance * 0.07)).round();
+                back_size = (back_size + (measure.advance * 0.5)).round();
             }
             size = char_size;
         }
