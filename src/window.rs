@@ -18,7 +18,7 @@ use std::str;
 
 use crate::resource::Resource;
 
-use crate::boot::{App, Event, EventFlow};
+use crate::boot::{Boot, Event, EventFlow};
 use crate::gl_core::Gl;
 
 const RGB_FACTOR: f32 = 1.0 / 255.0;
@@ -34,7 +34,7 @@ pub struct Window {
     window_w: u32,
     window_h: u32,
     gl: Gl,
-    pub app: App,
+    pub boot: Boot,
     pub resource: Resource,
 }
 
@@ -46,7 +46,7 @@ impl Window {
             window_w,
             window_h,
             gl: Gl::new(),
-            app: App::new(),
+            boot: Boot::new(),
             resource: Resource::new(),
         }
     }
@@ -88,10 +88,10 @@ impl Window {
         self.gl
             .setup(&self.resource, self.window_w as f32, self.window_h as f32);
 
-        self.app
+        self.boot
             .dispatch(Event::Ready, &mut self.gl, &mut self.resource);
 
-        let bah = &self.app;
+        let bah = &self.boot;
         while !window.should_close() {
             //self.glfw.wait_events();
             self.process_events(&mut window, &events);
@@ -116,16 +116,16 @@ impl Window {
         for (_, event) in glfw::flush_messages(events) {
             match event {
                 glfw::WindowEvent::CursorPos(x, y) => {
-                    self.app.cursor.x = x as f32;
-                    self.app.cursor.y = y as f32;
-                    self.app.dispatch_event(
+                    self.boot.cursor.x = x as f32;
+                    self.boot.cursor.y = y as f32;
+                    self.boot.dispatch_event(
                         EventFlow::PointerMove,
                         &mut self.gl,
                         &mut self.resource,
                     )
                 }
                 glfw::WindowEvent::Char(character) => {
-                    self.app.dispatch_event(
+                    self.boot.dispatch_event(
                         EventFlow::Type(character),
                         &mut self.gl,
                         &mut self.resource,
@@ -134,7 +134,7 @@ impl Window {
 
                 glfw::WindowEvent::Key(key, scancode, keymod, mods) => match key {
                     glfw::Key::Backspace => match keymod {
-                        Action::Repeat | Action::Press => self.app.dispatch_event(
+                        Action::Repeat | Action::Press => self.boot.dispatch_event(
                             EventFlow::Backspace,
                             &mut self.gl,
                             &mut self.resource,
@@ -142,7 +142,7 @@ impl Window {
                         _ => (),
                     },
                     glfw::Key::Left => match keymod {
-                        Action::Repeat | Action::Press => self.app.dispatch_event(
+                        Action::Repeat | Action::Press => self.boot.dispatch_event(
                             EventFlow::Left,
                             &mut self.gl,
                             &mut self.resource,
@@ -150,7 +150,7 @@ impl Window {
                         _ => (),
                     },
                     glfw::Key::Right => match keymod {
-                        Action::Repeat | Action::Press => self.app.dispatch_event(
+                        Action::Repeat | Action::Press => self.boot.dispatch_event(
                             EventFlow::Right,
                             &mut self.gl,
                             &mut self.resource,
@@ -161,14 +161,14 @@ impl Window {
                 },
                 glfw::WindowEvent::MouseButton(btn, action, ..) => match action {
                     Action::Press => {
-                        self.app.dispatch_event(
+                        self.boot.dispatch_event(
                             EventFlow::PointerDown,
                             &mut self.gl,
                             &mut self.resource,
                         );
                     }
                     Action::Release => {
-                        self.app.dispatch_event(
+                        self.boot.dispatch_event(
                             EventFlow::PointerUp,
                             &mut self.gl,
                             &mut self.resource,

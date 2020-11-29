@@ -15,7 +15,7 @@ pub struct Cursor {
     pub y: f32,
 }
 
-pub struct App {
+pub struct Boot {
     dom: Dom,
     pub cursor: Cursor,
     pub focus: Option<usize>,
@@ -43,9 +43,9 @@ pub enum EventFlow {
     PointerUp,
 }
 
-impl App {
+impl Boot {
     pub fn new() -> Self {
-        App {
+        Boot {
             dom: Dom::new(),
             cursor: Cursor { x: 0.0, y: 0.0 },
             focus: None,
