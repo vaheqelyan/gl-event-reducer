@@ -46,7 +46,7 @@ impl Input {
         } else {
             self.push_left
         };
-        self.stop_backspace = false;
+        self.stop_backspace = self.cursor == 0;
     }
 
     pub fn cursor_right(&mut self, container: f32, font: &Font) {
@@ -213,5 +213,7 @@ impl Input {
                 self.push_left
             }
         }
+
+        self.stop_backspace = self.cursor == 0;
     }
 }
