@@ -12,3 +12,4 @@ pub mod font;
 // Elements
 
 mod input;
+mod render;

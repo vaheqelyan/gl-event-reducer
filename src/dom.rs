@@ -10,6 +10,7 @@ use crate::input::input_element::Input;
 pub enum Element {
     Input,
     Box,
+    Scroll,
 }
 
 #[derive(Debug)]

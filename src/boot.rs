@@ -1,8 +1,9 @@
 use crate::dom::{Bound, Dom, Element};
 use crate::gl_core::Gl;
 
+use crate::render::Render;
 use crate::resource::Resource;
-use crate::utils::{find_bound_xy, generate};
+use crate::utils::find_bound_xy;
 use core::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -20,6 +21,7 @@ pub struct Boot {
     pub cursor: Cursor,
     pub focus: Option<usize>,
     pub event_state: EventState,
+    render: Render,
 }
 
 pub enum Event {
@@ -54,6 +56,7 @@ impl Boot {
                 pointermove: false,
                 pointerup: false,
             },
+            render: Render::new(),
         }
     }
 
@@ -76,7 +79,7 @@ impl Boot {
                     element: Element::Input,
                 });
 
-                gl.draw(generate(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
             }
         }
     }
@@ -97,7 +100,7 @@ impl Boot {
                     borrow_dom.ddom.input(key, 0, &self.focus.unwrap(), bound);
                 }
 
-                gl.draw(generate(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
             }
 
             EventFlow::Backspace => {
@@ -108,7 +111,7 @@ impl Boot {
                     borrow_dom.ddom.backspace(&self.focus.unwrap(), bound);
                 }
 
-                gl.draw(generate(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
             }
 
             EventFlow::Left => {
@@ -119,7 +122,7 @@ impl Boot {
                     borrow_dom.ddom.cursor_left(&self.focus.unwrap(), bound);
                 }
 
-                gl.draw(generate(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
             }
 
             EventFlow::Right => {
@@ -129,7 +132,7 @@ impl Boot {
 
                     borrow_dom.ddom.cursor_right(&self.focus.unwrap(), bound);
                 }
-                gl.draw(generate(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
             }
 
             EventFlow::PointerDown => {
@@ -150,7 +153,7 @@ impl Boot {
                     }
                 }
 
-                gl.draw(generate(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
             }
 
             EventFlow::PointerMove => {
@@ -169,7 +172,7 @@ impl Boot {
                         .select(&self.focus.unwrap(), width, x, y, &self.cursor);
                 }
 
-                gl.draw(generate(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
             }
 
             EventFlow::PointerUp => {
@@ -177,7 +180,7 @@ impl Boot {
                 self.event_state.pointermove = false;
                 self.focus = find_bound_xy(&self.cursor, &self.dom);
 
-                gl.draw(generate(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
             }
 
             _ => (),
