@@ -1,4 +1,4 @@
-pub mod app;
+pub mod boot;
 pub mod ddom;
 pub mod dom;
 pub mod gl_core;

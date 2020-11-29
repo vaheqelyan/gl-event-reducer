@@ -18,7 +18,7 @@ use std::str;
 
 use crate::resource::Resource;
 
-use crate::app::{App, Event, EventFlow};
+use crate::boot::{App, Event, EventFlow};
 use crate::gl_core::Gl;
 
 const RGB_FACTOR: f32 = 1.0 / 255.0;

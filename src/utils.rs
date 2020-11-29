@@ -12,7 +12,7 @@ use std::os::raw::c_void;
 use std::ptr;
 use std::str;
 
-use crate::app::Cursor;
+use crate::boot::Cursor;
 use crate::dom::{Bound, Dom, Element};
 use crate::font::Font;
 

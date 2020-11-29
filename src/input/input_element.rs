@@ -1,4 +1,4 @@
-use crate::app::Cursor;
+use crate::boot::Cursor;
 use crate::dom::Bound;
 use crate::font::Font;
 use num_traits::{clamp, clamp_max, clamp_min, sign};
