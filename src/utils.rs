@@ -203,17 +203,13 @@ pub(crate) fn div(
     ]
 }
 
-pub fn generate(
-    dom: &Rc<RefCell<Dom>>,
-    resource: &mut Resource,
-    focus_id: Option<usize>,
-) -> Vec<f32> {
+pub fn generate(dom: &Dom, resource: &mut Resource, focus_id: Option<usize>) -> Vec<f32> {
     let mut buffer = vec![];
 
     let matrix = glm::ortho(0.0, 300 as f32, 722 as f32, 0.0, -1.0, 1.0);
 
-    for x in &dom.borrow().vec {
-        let get_dom = dom.borrow();
+    for x in &dom.vec {
+        let get_dom = &dom;
         let bound = get_dom.get(*x);
 
         if let Element::Input = bound.element {
@@ -277,11 +273,11 @@ pub fn generate(
     buffer
 }
 
-pub fn find_bound_xy(cursor: &Cursor, dom: &Rc<RefCell<Dom>>) -> Option<usize> {
+pub fn find_bound_xy(cursor: &Cursor, dom: &Dom) -> Option<usize> {
     let mut id: Option<usize> = None;
 
-    for x in &dom.borrow().vec {
-        let get_dom = dom.borrow();
+    for x in &dom.vec {
+        let get_dom = &dom;
         let bound = get_dom.get(*x);
 
         if cursor.x >= bound.x
