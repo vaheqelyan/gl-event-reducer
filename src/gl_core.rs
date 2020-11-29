@@ -27,6 +27,7 @@ pub struct Gl {
     pub(crate) index_buffer: Vec<u32>,
     pub(crate) vertex_buffer: Vec<f32>,
     pub(crate) pointer: Option<*mut std::ffi::c_void>,
+    pub(crate) vector_cleaner: Vec<f32>,
 }
 
 impl Gl {
@@ -44,6 +45,7 @@ impl Gl {
         }
 
         Gl {
+            vector_cleaner: vertex.to_vec(),
             vao: 0,
             vertex_buffer: vertex,
             index_buffer: Vec::new(),
@@ -55,16 +57,7 @@ impl Gl {
     pub fn draw(&mut self, mut buffer: Vec<f32>) {
         self.vertex_buffer.clear();
 
-        let mut vertex: Vec<f32> = Vec::with_capacity(32_000);
-
-        for i in 0..32_000 / 32 {
-            vertex.append(&mut vec![
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, // ---
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-            ]);
-        }
-        self.vertex_buffer.append(&mut vertex);
+        self.vertex_buffer.append(&mut self.vector_cleaner);
 
         unsafe {
             ptr::copy_nonoverlapping(
