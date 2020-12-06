@@ -158,7 +158,6 @@ impl Layout {
                 }
 
                 if user_right > 0.0 {
-                    println!("{:?}", user_right);
                     desc.result.x = ((parent_x + parent_width) - desc.result.width) - user_right;
                     desc.result.y = y;
                 }
