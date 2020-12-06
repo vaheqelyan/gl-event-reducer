@@ -124,9 +124,8 @@ impl Layout {
                 let user_right = match desc.style.right {
                     Dimension::Px(right) => right,
                     Dimension::Perc(right) => {
-                        /*let calc = user_y / 100.0 * parent_width;
-                        calc*/
-                        right
+                        let calc = right / 100.0 * parent_width;
+                        calc
                     }
                     _ => 0.0,
                 };

@@ -101,25 +101,40 @@ impl Boot {
 
                 let block1 = self.dom.div(Style {
                     width: Dimension::Perc(50.0),
-                    height: Dimension::Px(100.0),
+                    height: Dimension::Px(200.0),
                     bg_color: [40.0, 26.0, 21.0],
                     ..Default::default()
                 });
 
                 let block2 = self.dom.div(Style {
-                    width: Dimension::Perc(80.0),
+                    width: Dimension::Perc(50.0),
                     height: Dimension::Px(100.0),
                     bg_color: [57.0, 64.0, 92.0],
+                    top: Dimension::Px(500.0),
                     ..Default::default()
                 });
 
-                let block1_1 = self.dom.div(Style {
+                let block3 = self.dom.div(Style {
+                    width: Dimension::Perc(50.0),
+                    height: Dimension::Px(100.0),
+                    bg_color: [0.0, 157.0, 255.0],
+                    ..Default::default()
+                });
+
+                let block4 = self.dom.div(Style {
+                    width: Dimension::Perc(50.0),
+                    height: Dimension::Px(100.0),
+                    bg_color: [255.0, 3.0, 255.0],
+                    ..Default::default()
+                });
+
+                /*let block1_1 = self.dom.div(Style {
                     width: Dimension::Px(10.0),
                     height: Dimension::Px(100.0),
                     bg_color: [0.0, 0.0, 0.0],
-                    right: Dimension::Px(0.1),
+                    right: Dimension::Perc(50.0),
                     ..Default::default()
-                });
+                });*/
 
                 let body = self.dom.get_top_screen();
 
@@ -129,8 +144,10 @@ impl Boot {
 
                 self.dom.append(block1, col3);
 
-                self.dom.append(block1_1, block2);
+                //self.dom.append(block1_1, block2);
                 self.dom.append(block2, col3);
+                self.dom.append(block3, col3);
+                self.dom.append(block4, col3);
                 self.dom.append(container, body);
 
                 self.dom.layout();
