@@ -100,7 +100,7 @@ impl Boot {
                 });
 
                 let block1 = self.dom.div(Style {
-                    width: Dimension::Perc(50.0),
+                    width: Dimension::Perc(100.0),
                     height: Dimension::Px(200.0),
                     bg_color: [40.0, 26.0, 21.0],
                     ..Default::default()

@@ -76,7 +76,29 @@ impl Dom {
             },
         });
 
+        if let Overflow::Scroll = style.overflow {
+            let scroll_skillet = self.create(ElementMetaData {
+                element_type: Element::Div,
+                belong_to_screen: 0,
+                scroll: false,
+            });
+
+            self.ddom.register_div(
+                scroll_skillet,
+                Style {
+                    width: Dimension::Px(10.0),
+                    height: Dimension::Px(100.0),
+                    bg_color: [255.0, 220.0, 97.0],
+                    right: Dimension::Px(0.1),
+                    ..Default::default()
+                },
+            );
+
+            self.append(scroll_skillet, id);
+        }
+
         self.ddom.register_div(id, style);
+
         id
     }
 
