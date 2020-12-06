@@ -1,11 +1,13 @@
 use crate::boot::Cursor;
-use crate::dom::Bound;
 use crate::font::Font;
 use std::collections::HashMap;
 
+use crate::style::Style;
 use num_traits::{clamp, clamp_min};
 
+use crate::div::div_element::Div;
 use crate::input::input_element::Input;
+use crate::scroll::scroll_element::Scroll;
 
 #[derive(Debug)]
 struct ElementData {
@@ -16,6 +18,8 @@ struct ElementData {
 pub struct Ddom {
     data: HashMap<usize, ElementData>,
     pub input_data: HashMap<usize, Input>,
+    pub div_data: HashMap<usize, Div>,
+    pub scroll_data: HashMap<usize, Scroll>,
     pub font: Font,
 }
 
@@ -24,11 +28,21 @@ impl Ddom {
         Ddom {
             data: HashMap::new(),
             input_data: HashMap::new(),
+            div_data: HashMap::new(),
+            scroll_data: HashMap::new(),
             font: Font::new(),
         }
     }
 
-    pub fn create_input(&mut self, id: usize) {
+    pub fn register_div(&mut self, id: usize, style: Style) {
+        self.div_data.insert(id, Div::new(style));
+    }
+
+    pub fn register_scroll(&mut self, id: usize, style: Style) {
+        self.scroll_data.insert(id, Scroll::new(style));
+    }
+
+    pub fn register_input(&mut self, id: usize, style: Style) {
         self.input_data.insert(
             id,
             Input {
@@ -79,4 +93,5 @@ impl Ddom {
             data_element.select(container, x, y, cursor, &mut self.font);
         }
     }
+    pub fn foo(&mut self) {}
 }

@@ -1,5 +1,6 @@
 use crate::dom::{Dom, Element};
 use crate::resource::Resource;
+use crate::style::Style;
 use crate::utils::{div, layer, rgb, size, xy};
 
 pub(crate) struct Render {}
@@ -21,7 +22,27 @@ impl Render {
             let get_dom = &dom;
             let bound = get_dom.get(*x);
 
-            if let Element::Input = bound.element {
+            if let Element::Div = bound.element_type {
+                let inst_div = get_dom.get_div(*x);
+                let result = &inst_div.result;
+                let style = &inst_div.style;
+
+                let Style { bg_color, .. } = style;
+                let [r, g, b] = bg_color;
+                println!("{:?}", result);
+
+                buffer.append(&mut div(
+                    xy(result.x, result.y),
+                    size(result.width, result.height),
+                    rgb(*r, *g, *b),
+                    layer(0.1),
+                    result.width,
+                    result.height,
+                    false,
+                ));
+            }
+
+            /*if let Element::Input = bound.element {
                 let input = get_dom.get_input(*x);
 
                 buffer.append(&mut div(
@@ -73,7 +94,7 @@ impl Render {
                         false,
                     ));
                 }
-            }
+            }*/
         }
 
         buffer

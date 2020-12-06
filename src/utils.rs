@@ -13,7 +13,7 @@ use std::ptr;
 use std::str;
 
 use crate::boot::Cursor;
-use crate::dom::{Bound, Dom, Element};
+use crate::dom::{Dom, Element, ElementMetaData};
 use crate::font::Font;
 
 use crate::resource::Resource;
@@ -197,7 +197,7 @@ pub(crate) fn div(
     ]
 }
 
-pub fn find_bound_xy(cursor: &Cursor, dom: &Dom) -> Option<usize> {
+/*pub fn find_bound_xy(cursor: &Cursor, dom: &Dom) -> Option<usize> {
     let mut id: Option<usize> = None;
 
     for x in &dom.vec {
@@ -214,4 +214,4 @@ pub fn find_bound_xy(cursor: &Cursor, dom: &Dom) -> Option<usize> {
     }
 
     id
-}
+}*/

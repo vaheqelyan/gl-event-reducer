@@ -1,9 +1,9 @@
-use crate::dom::{Bound, Dom, Element};
+use crate::dom::{Dom, Element, ElementMetaData};
 use crate::gl_core::Gl;
 
 use crate::render::Render;
 use crate::resource::Resource;
-use crate::utils::find_bound_xy;
+//use crate::utils::find_bound_xy;
 use core::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -40,6 +40,8 @@ pub enum EventFlow {
     Left,
     Right,
 
+    Init(f32, f32),
+
     PointerDown,
     PointerMove,
     PointerUp,
@@ -63,23 +65,71 @@ impl Boot {
     pub fn reducer(&mut self, event: Event, gl: &mut Gl, resource: &mut Resource) {
         match event {
             Event::Ready => {
-                let one = self.dom.create(Bound {
-                    x: 10.0,
-                    y: 10.0,
-                    width: 180.0,
-                    height: 32.0,
-                    element: Element::Input,
+                use crate::style::{Dimension, Display, Overflow, Style};
+
+                let container = self.dom.div(Style {
+                    width: Dimension::Perc(100.0),
+                    height: Dimension::Perc(100.0),
+                    bg_color: [233.0, 233.0, 233.0],
+                    ..Default::default()
                 });
 
-                let one = self.dom.create(Bound {
-                    x: 10.0,
-                    y: 43.0,
-                    width: 180.0,
-                    height: 32.0,
-                    element: Element::Input,
+                let col1 = self.dom.div(Style {
+                    width: Dimension::Perc(33.3),
+                    height: Dimension::Perc(50.0),
+                    bg_color: [165.0, 105.0, 80.0],
+                    display: Display::InlineBlock,
+                    ..Default::default()
                 });
+
+                let col2 = self.dom.div(Style {
+                    width: Dimension::Perc(33.3),
+                    height: Dimension::Perc(50.0),
+                    bg_color: [249.0, 163.0, 91.0],
+                    display: Display::InlineBlock,
+                    ..Default::default()
+                });
+
+                let col3 = self.dom.div(Style {
+                    width: Dimension::Perc(33.3),
+                    height: Dimension::Px(100.0),
+                    bg_color: [236.0, 115.0, 121.0],
+                    overflow: Overflow::Scroll,
+                    display: Display::InlineBlock,
+                    ..Default::default()
+                });
+
+                let block1 = self.dom.div(Style {
+                    width: Dimension::Perc(50.0),
+                    height: Dimension::Px(100.0),
+                    bg_color: [40.0, 26.0, 21.0],
+                    ..Default::default()
+                });
+
+                let block2 = self.dom.div(Style {
+                    width: Dimension::Perc(50.0),
+                    height: Dimension::Px(100.0),
+                    bg_color: [57.0, 64.0, 92.0],
+                    ..Default::default()
+                });
+
+                let body = self.dom.get_top_screen();
+
+                self.dom.append(col1, container);
+                self.dom.append(col2, container);
+                self.dom.append(col3, container);
+
+                self.dom.append(block1, col3);
+                self.dom.append(block2, col3);
+                self.dom.append(container, body);
+
+                self.dom.debug();
+
+                self.dom.layout();
 
                 gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
+
+                //gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
             }
         }
     }
@@ -92,51 +142,55 @@ impl Boot {
 
     pub fn dispatch_event(&mut self, event: EventFlow, gl: &mut Gl, resource: &mut Resource) {
         match event {
+            EventFlow::Init(width, height) => {
+                self.dom.top_screen(width, height);
+            }
+
             EventFlow::Type(key) => {
-                if self.focus != None {
+                /*if self.focus != None {
                     let mut borrow_dom = &mut self.dom;
                     let bound = borrow_dom.get(self.focus.unwrap()).width;
 
                     borrow_dom.ddom.input(key, 0, &self.focus.unwrap(), bound);
                 }
 
-                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));*/
             }
 
             EventFlow::Backspace => {
-                if self.focus != None {
+                /*if self.focus != None {
                     let mut borrow_dom = &mut self.dom;
                     let bound = borrow_dom.get(self.focus.unwrap()).width;
 
                     borrow_dom.ddom.backspace(&self.focus.unwrap(), bound);
                 }
 
-                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));*/
             }
 
             EventFlow::Left => {
-                if self.focus != None {
+                /*if self.focus != None {
                     let mut borrow_dom = &mut self.dom;
                     let bound = borrow_dom.get(self.focus.unwrap()).width;
 
                     borrow_dom.ddom.cursor_left(&self.focus.unwrap(), bound);
                 }
 
-                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));*/
             }
 
             EventFlow::Right => {
-                if self.focus != None {
+                /*if self.focus != None {
                     let mut borrow_dom = &mut self.dom;
                     let bound = borrow_dom.get(self.focus.unwrap()).width;
 
                     borrow_dom.ddom.cursor_right(&self.focus.unwrap(), bound);
                 }
-                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));*/
             }
 
             EventFlow::PointerDown => {
-                self.event_state.pointerdown = true;
+                /*self.event_state.pointerdown = true;
                 let element_id = find_bound_xy(&self.cursor, &self.dom);
                 if element_id != None {
                     let mut borrow_dom = &mut self.dom;
@@ -153,11 +207,11 @@ impl Boot {
                     }
                 }
 
-                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));*/
             }
 
             EventFlow::PointerMove => {
-                self.event_state.pointermove = true;
+                /*self.event_state.pointermove = true;
                 if self.focus != None && self.event_state.pointerdown == true {
                     let mut borrow_dom = &mut self.dom;
 
@@ -172,15 +226,15 @@ impl Boot {
                         .select(&self.focus.unwrap(), width, x, y, &self.cursor);
                 }
 
-                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));*/
             }
 
             EventFlow::PointerUp => {
-                self.event_state.pointerdown = false;
+                /*self.event_state.pointerdown = false;
                 self.event_state.pointermove = false;
                 self.focus = find_bound_xy(&self.cursor, &self.dom);
 
-                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
+                gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));*/
             }
 
             _ => (),

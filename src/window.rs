@@ -88,6 +88,11 @@ impl Window {
         self.gl
             .setup(&self.resource, self.window_w as f32, self.window_h as f32);
 
+        self.boot.dispatch_event(
+            EventFlow::Init(self.window_w as f32, self.window_h as f32),
+            &mut self.gl,
+            &mut self.resource,
+        );
         self.boot
             .dispatch(Event::Ready, &mut self.gl, &mut self.resource);
 
