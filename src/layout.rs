@@ -103,24 +103,47 @@ impl Layout {
 
                 Layout::set_size(&mut desc, parent_width, parent_height);
 
-                match desc.style.display {
-                    Display::Block => {
-                        desc.result.y = y;
-                        desc.result.x = x;
-                        y += parent_y + desc.result.height;
-                    }
-                    Display::InlineBlock => {
-                        desc.result.x = x;
-                        desc.result.y = y;
-                        x += parent_x + desc.result.width;
-                    }
+                let user_x = match desc.style.left {
+                    Dimension::Px(user_x) => user_x,
+                    Dimension::Perc(user_x) => user_x,
+                    _ => 0.0,
                 };
+
+                let user_y = match desc.style.top {
+                    Dimension::Px(user_y) => user_y,
+                    Dimension::Perc(user_y) => user_y,
+                    _ => 0.0,
+                };
+
+                if user_x <= 0.0 && user_y <= 0.0 {
+                    match desc.style.display {
+                        Display::Block => {
+                            desc.result.y = y;
+                            desc.result.x = x;
+                            y += parent_y + desc.result.height;
+                        }
+                        Display::InlineBlock => {
+                            desc.result.x = x;
+                            desc.result.y = y;
+                            x += parent_x + desc.result.width;
+                        }
+                    };
+                }
+
+                if user_y > 0.0 {
+                    desc.result.x = x;
+                    desc.result.y = parent_y;
+                    y -= desc.result.height;
+                }
+
                 far_y = y;
             };
 
-            let scroll_id = metadata.get(&child).unwrap().belong_to_screen;
-            let mut foo = ddom.div_data.get_mut(&scroll_id).unwrap();
-            foo.result.far_y = clamp_min(far_y, foo.result.far_y);
+            {
+                let scroll_id = metadata.get(&child).unwrap().belong_to_screen;
+                let mut foo = ddom.div_data.get_mut(&scroll_id).unwrap();
+                foo.result.far_y = clamp_min(far_y, foo.result.far_y);
+            }
 
             self.traverse(
                 child,

@@ -26,6 +26,9 @@ pub struct Style {
     pub bg_color: [f32; 3],
     pub overflow: Overflow,
     pub max_height: Dimension,
+    pub left: Dimension,
+    pub top: Dimension,
+    pub right: Dimension,
 }
 
 impl Default for Style {
@@ -37,6 +40,9 @@ impl Default for Style {
             bg_color: [0.0, 0.0, 0.0],
             overflow: Overflow::Hidden,
             max_height: Dimension::None,
+            left: Dimension::Px(0.0),
+            top: Dimension::Px(0.0),
+            right: Dimension::Px(0.0),
         }
     }
 }
