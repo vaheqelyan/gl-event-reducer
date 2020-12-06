@@ -132,7 +132,7 @@ impl Layout {
 
                 if user_y > 0.0 {
                     desc.result.x = x;
-                    desc.result.y = parent_y;
+                    desc.result.y = parent_y + user_y;
                     y -= desc.result.height;
                 }
 
