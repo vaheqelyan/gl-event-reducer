@@ -105,13 +105,19 @@ impl Layout {
 
                 let user_x = match desc.style.left {
                     Dimension::Px(user_x) => user_x,
-                    Dimension::Perc(user_x) => user_x,
+                    Dimension::Perc(user_x) => {
+                        let calc = user_x / 100.0 * parent_width;
+                        calc
+                    }
                     _ => 0.0,
                 };
 
                 let user_y = match desc.style.top {
                     Dimension::Px(user_y) => user_y,
-                    Dimension::Perc(user_y) => user_y,
+                    Dimension::Perc(user_y) => {
+                        let calc = user_y / 100.0 * parent_width;
+                        calc
+                    }
                     _ => 0.0,
                 };
 
@@ -130,10 +136,15 @@ impl Layout {
                     };
                 }
 
+                // TODO: Do not forget to substract empty
                 if user_y > 0.0 {
                     desc.result.x = x;
                     desc.result.y = parent_y + user_y;
-                    y -= desc.result.height;
+                }
+
+                if user_x > 0.0 {
+                    desc.result.x = parent_x + user_x;
+                    desc.result.y = y;
                 }
 
                 far_y = y;
