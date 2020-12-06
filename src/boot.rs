@@ -117,6 +117,7 @@ impl Boot {
                     width: Dimension::Px(10.0),
                     height: Dimension::Px(100.0),
                     bg_color: [0.0, 0.0, 0.0],
+                    right: Dimension::Px(0.1),
                     ..Default::default()
                 });
 

@@ -121,7 +121,17 @@ impl Layout {
                     _ => 0.0,
                 };
 
-                if user_x <= 0.0 && user_y <= 0.0 {
+                let user_right = match desc.style.right {
+                    Dimension::Px(right) => right,
+                    Dimension::Perc(right) => {
+                        /*let calc = user_y / 100.0 * parent_width;
+                        calc*/
+                        right
+                    }
+                    _ => 0.0,
+                };
+
+                if user_x <= 0.0 && user_y <= 0.0 && user_right <= 0.0 {
                     match desc.style.display {
                         Display::Block => {
                             desc.result.y = y;
@@ -144,6 +154,12 @@ impl Layout {
 
                 if user_x > 0.0 {
                     desc.result.x = parent_x + user_x;
+                    desc.result.y = y;
+                }
+
+                if user_right > 0.0 {
+                    println!("{:?}", user_right);
+                    desc.result.x = ((parent_x + parent_width) - desc.result.width) - user_right;
                     desc.result.y = y;
                 }
 
