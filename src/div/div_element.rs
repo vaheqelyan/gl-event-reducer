@@ -9,6 +9,7 @@ pub struct DivResult {
     pub height: f32,
     pub x: f32,
     pub y: f32,
+    pub far_y: f32,
 }
 
 #[derive(Debug)]
@@ -25,6 +26,7 @@ impl Div {
                 height: 0.0,
                 x: 0.0,
                 y: 0.0,
+                far_y: 0.0,
             },
             style,
         }

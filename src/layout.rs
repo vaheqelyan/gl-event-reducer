@@ -3,6 +3,7 @@ use crate::div::div_element::Div;
 use crate::dom::{Element, ElementMetaData};
 use crate::style::{Dimension, Display};
 use itertools::Itertools;
+use num_traits::clamp_min;
 use std::collections::HashMap;
 
 #[derive(Debug)]
@@ -86,34 +87,50 @@ impl Layout {
         metadata: &HashMap<usize, ElementMetaData>,
         child_parent: &HashMap<usize, usize>,
         parent_id: usize,
+        mut far_y: f32,
     ) {
         let desc = ddom.div_data.get(&element).unwrap();
         let mut x = desc.result.x;
         let mut y = desc.result.y;
         for child in children {
             let children = self.get_children(&child, child_parent);
-            let (parent_width, parent_height, parent_x, parent_y) =
-                self.parent_bound(child, element, ddom);
 
-            let mut desc = ddom.div_data.get_mut(&child).unwrap();
-            println!("{:?} {:?}", child, metadata.get(&child).unwrap());
+            {
+                let (parent_width, parent_height, parent_x, parent_y) =
+                    self.parent_bound(child, element, ddom);
 
-            Layout::set_size(&mut desc, parent_width, parent_height);
+                let mut desc = ddom.div_data.get_mut(&child).unwrap();
 
-            match desc.style.display {
-                Display::Block => {
-                    desc.result.y = y;
-                    desc.result.x = x;
-                    y += parent_y + desc.result.height;
-                }
-                Display::InlineBlock => {
-                    desc.result.x = x;
-                    desc.result.y = y;
-                    x += parent_x + desc.result.width;
-                }
+                Layout::set_size(&mut desc, parent_width, parent_height);
+
+                match desc.style.display {
+                    Display::Block => {
+                        desc.result.y = y;
+                        desc.result.x = x;
+                        y += parent_y + desc.result.height;
+                    }
+                    Display::InlineBlock => {
+                        desc.result.x = x;
+                        desc.result.y = y;
+                        x += parent_x + desc.result.width;
+                    }
+                };
+                far_y = y;
             };
 
-            self.traverse(child, children, ddom, metadata, child_parent, element);
+            let scroll_id = metadata.get(&child).unwrap().belong_to_screen;
+            let mut foo = ddom.div_data.get_mut(&scroll_id).unwrap();
+            foo.result.far_y = clamp_min(far_y, foo.result.far_y);
+
+            self.traverse(
+                child,
+                children,
+                ddom,
+                metadata,
+                child_parent,
+                element,
+                far_y,
+            );
         }
     }
 
@@ -124,6 +141,6 @@ impl Layout {
         ddom: &mut Ddom,
         child_parent: &HashMap<usize, usize>,
     ) {
-        self.traverse(el_ids[0], vec![0], ddom, el_meta, child_parent, 0);
+        self.traverse(el_ids[0], vec![0], ddom, el_meta, child_parent, 0, 0.0);
     }
 }
