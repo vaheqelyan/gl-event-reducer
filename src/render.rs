@@ -22,6 +22,8 @@ impl Render {
             let get_dom = &dom;
             let bound = get_dom.get(*x);
 
+            let scroll_papa = dom.ddom.div_data.get(&bound.belong_to_screen).unwrap();
+
             if let Element::Div = bound.element_type {
                 let inst_div = get_dom.get_div(*x);
                 let result = &inst_div.result;
