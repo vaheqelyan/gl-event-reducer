@@ -106,6 +106,13 @@ impl Boot {
                     ..Default::default()
                 });
 
+                let block1_1 = self.dom.div(Style {
+                    width: Dimension::Perc(50.0),
+                    height: Dimension::Px(100.0),
+                    bg_color: [0.0, 0.0, 0.0],
+                    ..Default::default()
+                });
+
                 let block2 = self.dom.div(Style {
                     width: Dimension::Perc(50.0),
                     height: Dimension::Px(100.0),
@@ -120,10 +127,10 @@ impl Boot {
                 self.dom.append(col3, container);
 
                 self.dom.append(block1, col3);
+
+                self.dom.append(block1_1, block1);
                 self.dom.append(block2, col3);
                 self.dom.append(container, body);
-
-                self.dom.debug();
 
                 self.dom.layout();
 

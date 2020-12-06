@@ -96,6 +96,7 @@ impl Layout {
                 self.parent_bound(child, element, ddom);
 
             let mut desc = ddom.div_data.get_mut(&child).unwrap();
+            println!("{:?} {:?}", child, metadata.get(&child).unwrap());
 
             Layout::set_size(&mut desc, parent_width, parent_height);
 

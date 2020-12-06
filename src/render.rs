@@ -29,7 +29,6 @@ impl Render {
 
                 let Style { bg_color, .. } = style;
                 let [r, g, b] = bg_color;
-                println!("{:?}", result);
 
                 buffer.append(&mut div(
                     xy(result.x, result.y),

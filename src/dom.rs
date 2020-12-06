@@ -119,9 +119,13 @@ impl Dom {
 
     pub fn append(&mut self, element: usize, parent: usize) {
         let meta = self.get(parent);
+        let screen_id = meta.belong_to_screen;
         if meta.scroll == true {
             let mut meta_child = self.map.get_mut(&element).unwrap();
             meta_child.belong_to_screen = parent;
+        } else {
+            let mut meta_child = self.map.get_mut(&element).unwrap();
+            meta_child.belong_to_screen = screen_id;
         }
 
         self.child_parent.insert(element, parent);
