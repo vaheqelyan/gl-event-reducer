@@ -1,7 +1,7 @@
 use crate::ddom::Ddom;
 use crate::div::div_element::Div;
 use crate::dom::{Element, ElementMetaData};
-use crate::style::{Dimension, Display};
+use crate::style::{Dimension, Direction, Display};
 use itertools::Itertools;
 use num_traits::clamp_min;
 use std::collections::HashMap;
@@ -19,9 +19,12 @@ impl Layout {
             height: 0.0,
         }
     }
-    pub(crate) fn viewport(&mut self, width: f32, height: f32) {
+    pub(crate) fn viewport(&mut self, width: f32, height: f32, ddom: &mut Ddom) {
         self.width = width;
         self.height = height;
+        let mut result = &mut ddom.div_data.get_mut(&0).unwrap().result;
+        result.width = width;
+        result.height = height;
     }
     pub(crate) fn get_children(
         &self,
@@ -52,31 +55,27 @@ impl Layout {
         }
     }
 
-    pub(crate) fn set_size(div: &mut Div, parent_width: f32, parent_height: f32) {
-        match div.style.width {
+    pub(crate) fn calc_dimension(dimension: &Dimension, bound: f32, grow_factor: f32) -> f32 {
+        match dimension {
             Dimension::Perc(width) => {
-                let w = width / 100.0 * parent_width;
-                div.result.width = w;
+                let w = width / 100.0 * bound;
+                w
             }
-            Dimension::Px(width) => {
-                div.result.width = width;
-            }
-            Dimension::Auto => (),
-            Dimension::None => (),
+            Dimension::Px(width) => *width,
+            Dimension::Grow(grow) => grow * grow_factor,
+            _ => 0.0,
         }
+    }
 
-        match div.style.height {
-            Dimension::Perc(height) => {
-                let h = height / 100.0 * parent_height;
-                div.result.height = h;
-            }
-            Dimension::Px(height) => {
-                div.result.height = height;
-            }
+    pub(crate) fn set_box_size(
+        div: &mut Div,
+        parent_width: f32,
+        parent_height: f32,
+        grow_factor: f32,
+    ) {
+        div.result.width = Layout::calc_dimension(&div.style.width, parent_width, grow_factor);
 
-            Dimension::Auto => (),
-            Dimension::None => (),
-        }
+        div.result.height = Layout::calc_dimension(&div.style.height, parent_height, grow_factor);
     }
 
     pub(crate) fn traverse(
@@ -92,6 +91,31 @@ impl Layout {
         let desc = ddom.div_data.get(&element).unwrap();
         let mut x = desc.result.x;
         let mut y = desc.result.y;
+        let mut container = desc.result.width;
+        let dir = &desc.style.direction.clone();
+
+        let remain_space: Option<(f32, f32)> =
+            children.iter().fold(Some((0.0, 0.0)), |acc, element| {
+                let style = &ddom.div_data.get(&element).unwrap().style;
+
+                let basis = match style.width {
+                    Dimension::Px(width) => width,
+                    _ => 0.0,
+                };
+
+                let grow = match style.width {
+                    Dimension::Grow(grow) => grow,
+                    _ => 0.0,
+                };
+                let (foo, bar) = acc.unwrap();
+
+                Some((basis + foo, grow + bar))
+            });
+
+        let (remain, total_grow) = remain_space.unwrap();
+        container = clamp_min(container - remain, 0.0);
+        let grow_factor = container / total_grow;
+
         for child in children {
             let children = self.get_children(&child, child_parent);
 
@@ -101,74 +125,23 @@ impl Layout {
 
                 let mut desc = ddom.div_data.get_mut(&child).unwrap();
 
-                Layout::set_size(&mut desc, parent_width, parent_height);
+                Layout::set_box_size(&mut desc, container, parent_height, grow_factor);
 
-                let user_x = match desc.style.left {
-                    Dimension::Px(user_x) => user_x,
-                    Dimension::Perc(user_x) => {
-                        let calc = user_x / 100.0 * parent_width;
-                        calc
+                match dir {
+                    Direction::Column => {
+                        desc.result.y = y;
+                        desc.result.x = x;
+                        y += parent_y + desc.result.height;
                     }
-                    _ => 0.0,
-                };
-
-                let user_y = match desc.style.top {
-                    Dimension::Px(user_y) => user_y,
-                    Dimension::Perc(user_y) => {
-                        let calc = user_y / 100.0 * parent_width;
-                        calc
+                    Direction::Row => {
+                        desc.result.x = x;
+                        desc.result.y = y;
+                        x += (desc.result.width);
                     }
-                    _ => 0.0,
                 };
-
-                let user_right = match desc.style.right {
-                    Dimension::Px(right) => right,
-                    Dimension::Perc(right) => {
-                        let calc = right / 100.0 * parent_width;
-                        calc
-                    }
-                    _ => 0.0,
-                };
-
-                if user_x <= 0.0 && user_y <= 0.0 && user_right <= 0.0 {
-                    match desc.style.display {
-                        Display::Block => {
-                            desc.result.y = y;
-                            desc.result.x = x;
-                            y += parent_y + desc.result.height;
-                        }
-                        Display::InlineBlock => {
-                            desc.result.x = x;
-                            desc.result.y = y;
-                            x += parent_x + desc.result.width;
-                        }
-                    };
-                }
-
-                // TODO: Do not forget to substract empty
-                if user_y > 0.0 {
-                    desc.result.x = x;
-                    desc.result.y = parent_y + user_y;
-                }
-
-                if user_x > 0.0 {
-                    desc.result.x = parent_x + user_x;
-                    desc.result.y = y;
-                }
-
-                if user_right > 0.0 {
-                    desc.result.x = ((parent_x + parent_width) - desc.result.width) - user_right;
-                    desc.result.y = y;
-                }
 
                 far_y = y;
             };
-
-            {
-                let scroll_id = metadata.get(&child).unwrap().belong_to_screen;
-                let mut foo = ddom.div_data.get_mut(&scroll_id).unwrap();
-                foo.result.far_y = clamp_min(far_y, foo.result.far_y);
-            }
 
             self.traverse(
                 child,

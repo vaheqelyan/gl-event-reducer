@@ -4,6 +4,7 @@ pub enum Dimension {
     Perc(f32),
     Auto,
     None,
+    Grow(f32),
 }
 
 #[derive(Debug)]
@@ -18,8 +19,15 @@ pub enum Overflow {
     Hidden,
 }
 
+#[derive(Debug, Clone)]
+pub enum Direction {
+    Row,
+    Column,
+}
+
 #[derive(Debug)]
 pub struct Style {
+    pub direction: Direction,
     pub width: Dimension,
     pub height: Dimension,
     pub display: Display,
@@ -43,6 +51,7 @@ impl Default for Style {
             left: Dimension::Px(0.0),
             top: Dimension::Px(0.0),
             right: Dimension::Px(0.0),
+            direction: Direction::Row,
         }
     }
 }

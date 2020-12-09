@@ -76,7 +76,7 @@ impl Dom {
             },
         });
 
-        if let Overflow::Scroll = style.overflow {
+        /*if let Overflow::Scroll = style.overflow {
             let scroll_skillet = self.create(ElementMetaData {
                 element_type: Element::Div,
                 belong_to_screen: 0,
@@ -95,7 +95,7 @@ impl Dom {
             );
 
             self.append(scroll_skillet, id);
-        }
+        }*/
 
         self.ddom.register_div(id, style);
 
@@ -116,15 +116,16 @@ impl Dom {
             belong_to_screen: 0,
             scroll: true,
         });
-        self.layout.viewport(width, height);
         self.ddom.register_div(
             id,
             Style {
-                width: Dimension::Perc(100.0),
-                height: Dimension::Perc(100.0),
+                width: Dimension::Px(width),
+                height: Dimension::Px(height),
                 ..Default::default()
             },
         );
+
+        self.layout.viewport(width, height, &mut self.ddom);
     }
 
     pub fn get_top_screen(&self) -> usize {

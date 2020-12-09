@@ -65,49 +65,47 @@ impl Boot {
     pub fn reducer(&mut self, event: Event, gl: &mut Gl, resource: &mut Resource) {
         match event {
             Event::Ready => {
-                use crate::style::{Dimension, Display, Overflow, Style};
+                use crate::style::{Dimension, Direction, Display, Overflow, Style};
 
                 let container = self.dom.div(Style {
                     width: Dimension::Perc(100.0),
                     height: Dimension::Perc(100.0),
                     bg_color: [233.0, 233.0, 233.0],
+                    direction: Direction::Row,
                     ..Default::default()
                 });
 
                 let col1 = self.dom.div(Style {
-                    width: Dimension::Perc(33.3),
-                    height: Dimension::Perc(50.0),
+                    width: Dimension::Grow(1.0),
+                    height: Dimension::Perc(30.0),
                     bg_color: [165.0, 105.0, 80.0],
-                    display: Display::InlineBlock,
                     ..Default::default()
                 });
 
                 let col2 = self.dom.div(Style {
-                    width: Dimension::Perc(33.3),
-                    height: Dimension::Perc(50.0),
+                    width: Dimension::Grow(2.0),
+                    height: Dimension::Perc(30.0),
                     bg_color: [249.0, 163.0, 91.0],
-                    display: Display::InlineBlock,
                     ..Default::default()
                 });
 
                 let col3 = self.dom.div(Style {
-                    width: Dimension::Perc(33.3),
-                    height: Dimension::Px(100.0),
+                    width: Dimension::Grow(1.0),
+                    height: Dimension::Perc(30.0),
                     bg_color: [236.0, 115.0, 121.0],
                     overflow: Overflow::Scroll,
-                    display: Display::InlineBlock,
                     ..Default::default()
                 });
 
                 let block1 = self.dom.div(Style {
-                    width: Dimension::Perc(100.0),
+                    width: Dimension::Grow(1.0),
                     height: Dimension::Px(200.0),
                     bg_color: [40.0, 26.0, 21.0],
                     ..Default::default()
                 });
 
                 let block2 = self.dom.div(Style {
-                    width: Dimension::Perc(50.0),
+                    width: Dimension::Grow(1.0),
                     height: Dimension::Px(100.0),
                     bg_color: [57.0, 64.0, 92.0],
                     top: Dimension::Px(500.0),
@@ -115,14 +113,14 @@ impl Boot {
                 });
 
                 let block3 = self.dom.div(Style {
-                    width: Dimension::Perc(50.0),
+                    width: Dimension::Grow(1.0),
                     height: Dimension::Px(100.0),
                     bg_color: [0.0, 157.0, 255.0],
                     ..Default::default()
                 });
 
                 let block4 = self.dom.div(Style {
-                    width: Dimension::Perc(50.0),
+                    width: Dimension::Grow(1.0),
                     height: Dimension::Px(100.0),
                     bg_color: [255.0, 3.0, 255.0],
                     ..Default::default()
@@ -140,14 +138,16 @@ impl Boot {
 
                 self.dom.append(col1, container);
                 self.dom.append(col2, container);
-                self.dom.append(col3, container);
+                //self.dom.append(col3, container);
 
                 self.dom.append(block1, col3);
 
-                //self.dom.append(block1_1, block2);
                 self.dom.append(block2, col3);
                 self.dom.append(block3, col3);
                 self.dom.append(block4, col3);
+
+                self.dom.append(col3, container);
+
                 self.dom.append(container, body);
 
                 self.dom.layout();
