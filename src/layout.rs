@@ -73,17 +73,16 @@ impl Layout {
 
     pub(crate) fn set_box_size(
         div: &mut Div,
-        parent_width: f32,
-        parent_height: f32,
+        container: f32,
         grow_factor: f32,
         c_width: f32,
         c_height: f32,
     ) {
         div.result.width =
-            Layout::calc_dimension(&div.style.width, parent_width, grow_factor, c_width);
+            Layout::calc_dimension(&div.style.width, container, grow_factor, c_width);
 
         div.result.height =
-            Layout::calc_dimension(&div.style.height, parent_height, grow_factor, c_height);
+            Layout::calc_dimension(&div.style.height, container, grow_factor, c_height);
     }
 
     pub(crate) fn traverse(
@@ -150,7 +149,6 @@ impl Layout {
                 Layout::set_box_size(
                     &mut desc,
                     container,
-                    parent_height,
                     grow_factor,
                     parent_width,
                     parent_height,
