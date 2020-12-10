@@ -31,7 +31,6 @@ impl Layout {
         element: &usize,
         child_parent: &HashMap<usize, usize>,
     ) -> Vec<usize> {
-        //println!("{:?} {:?}", element, child_parent);
         let mut els = vec![];
 
         for (key, value) in child_parent.iter().sorted() {
@@ -55,10 +54,15 @@ impl Layout {
         }
     }
 
-    pub(crate) fn calc_dimension(dimension: &Dimension, bound: f32, grow_factor: f32) -> f32 {
+    pub(crate) fn calc_dimension(
+        dimension: &Dimension,
+        bound: f32,
+        grow_factor: f32,
+        c_size: f32,
+    ) -> f32 {
         match dimension {
             Dimension::Perc(width) => {
-                let w = width / 100.0 * bound;
+                let w = width / 100.0 * c_size;
                 w
             }
             Dimension::Px(width) => *width,
@@ -72,10 +76,14 @@ impl Layout {
         parent_width: f32,
         parent_height: f32,
         grow_factor: f32,
+        c_width: f32,
+        c_height: f32,
     ) {
-        div.result.width = Layout::calc_dimension(&div.style.width, parent_width, grow_factor);
+        div.result.width =
+            Layout::calc_dimension(&div.style.width, parent_width, grow_factor, c_width);
 
-        div.result.height = Layout::calc_dimension(&div.style.height, parent_height, grow_factor);
+        div.result.height =
+            Layout::calc_dimension(&div.style.height, parent_height, grow_factor, c_height);
     }
 
     pub(crate) fn traverse(
@@ -91,25 +99,39 @@ impl Layout {
         let desc = ddom.div_data.get(&element).unwrap();
         let mut x = desc.result.x;
         let mut y = desc.result.y;
-        let mut container = desc.result.width;
+        let mut container = match desc.style.direction {
+            Direction::Column => desc.result.height,
+            Direction::Row => desc.result.width,
+        };
         let dir = &desc.style.direction.clone();
 
         let remain_space: Option<(f32, f32)> =
             children.iter().fold(Some((0.0, 0.0)), |acc, element| {
                 let style = &ddom.div_data.get(&element).unwrap().style;
 
-                let basis = match style.width {
-                    Dimension::Px(width) => width,
-                    _ => 0.0,
+                let basis = match dir {
+                    Direction::Row => {
+                        Layout::calc_dimension(&style.width, container, 0.0, container)
+                    }
+                    Direction::Column => {
+                        Layout::calc_dimension(&style.height, container, 0.0, container)
+                    }
                 };
 
-                let grow = match style.width {
-                    Dimension::Grow(grow) => grow,
-                    _ => 0.0,
+                let grow = match dir {
+                    Direction::Row => match style.width {
+                        Dimension::Grow(grow) => grow,
+                        _ => 0.0,
+                    },
+                    Direction::Column => match style.height {
+                        Dimension::Grow(grow) => grow,
+                        _ => 0.0,
+                    },
                 };
-                let (foo, bar) = acc.unwrap();
 
-                Some((basis + foo, grow + bar))
+                let (basis_result, grow_result) = acc.unwrap();
+
+                Some((basis + basis_result, grow + grow_result))
             });
 
         let (remain, total_grow) = remain_space.unwrap();
@@ -125,7 +147,14 @@ impl Layout {
 
                 let mut desc = ddom.div_data.get_mut(&child).unwrap();
 
-                Layout::set_box_size(&mut desc, container, parent_height, grow_factor);
+                Layout::set_box_size(
+                    &mut desc,
+                    container,
+                    parent_height,
+                    grow_factor,
+                    parent_width,
+                    parent_height,
+                );
 
                 match dir {
                     Direction::Column => {

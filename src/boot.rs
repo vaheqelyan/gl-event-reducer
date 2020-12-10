@@ -93,20 +93,21 @@ impl Boot {
                     width: Dimension::Grow(1.0),
                     height: Dimension::Perc(30.0),
                     bg_color: [236.0, 115.0, 121.0],
+                    direction: Direction::Column,
                     overflow: Overflow::Scroll,
                     ..Default::default()
                 });
 
                 let block1 = self.dom.div(Style {
                     width: Dimension::Grow(1.0),
-                    height: Dimension::Px(200.0),
+                    height: Dimension::Perc(50.0),
                     bg_color: [40.0, 26.0, 21.0],
                     ..Default::default()
                 });
 
                 let block2 = self.dom.div(Style {
                     width: Dimension::Grow(1.0),
-                    height: Dimension::Px(100.0),
+                    height: Dimension::Grow(1.0),
                     bg_color: [57.0, 64.0, 92.0],
                     top: Dimension::Px(500.0),
                     ..Default::default()
@@ -114,14 +115,14 @@ impl Boot {
 
                 let block3 = self.dom.div(Style {
                     width: Dimension::Grow(1.0),
-                    height: Dimension::Px(100.0),
+                    height: Dimension::Grow(1.0),
                     bg_color: [0.0, 157.0, 255.0],
                     ..Default::default()
                 });
 
                 let block4 = self.dom.div(Style {
                     width: Dimension::Grow(1.0),
-                    height: Dimension::Px(100.0),
+                    height: Dimension::Grow(1.0),
                     bg_color: [255.0, 3.0, 255.0],
                     ..Default::default()
                 });
