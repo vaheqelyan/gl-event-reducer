@@ -85,25 +85,12 @@ impl Layout {
             Layout::calc_dimension(&div.style.height, container, grow_factor, c_height);
     }
 
-    pub(crate) fn traverse(
-        &mut self,
-        element: usize,
-        children: Vec<usize>,
-        ddom: &mut Ddom,
-        metadata: &HashMap<usize, ElementMetaData>,
-        child_parent: &HashMap<usize, usize>,
-        parent_id: usize,
-        mut far_y: f32,
-    ) {
-        let desc = ddom.div_data.get(&element).unwrap();
-        let mut x = desc.result.x;
-        let mut y = desc.result.y;
-        let mut container = match desc.style.direction {
-            Direction::Column => desc.result.height,
-            Direction::Row => desc.result.width,
-        };
-        let dir = &desc.style.direction.clone();
-
+    pub(crate) fn get_flex_container(
+        children: &Vec<usize>,
+        dir: &Direction,
+        container: f32,
+        ddom: &Ddom,
+    ) -> (f32, f32) {
         let remain_space: Option<(f32, f32)> =
             children.iter().fold(Some((0.0, 0.0)), |acc, element| {
                 let style = &ddom.div_data.get(&element).unwrap().style;
@@ -133,7 +120,36 @@ impl Layout {
                 Some((basis + basis_result, grow + grow_result))
             });
 
-        let (remain, total_grow) = remain_space.unwrap();
+        remain_space.unwrap()
+    }
+
+    pub(crate) fn traverse(
+        &mut self,
+        element: usize,
+        children: Vec<usize>,
+        ddom: &mut Ddom,
+        metadata: &HashMap<usize, ElementMetaData>,
+        child_parent: &HashMap<usize, usize>,
+        parent_id: usize,
+        mut far_y: f32,
+    ) {
+        let desc = ddom.div_data.get(&element).unwrap();
+        let mut x = desc.result.x;
+        let mut y = desc.result.y;
+
+        let mut container = match desc.style.direction {
+            Direction::Column => desc.result.height,
+            Direction::Row => desc.result.width,
+        };
+
+        let bound_width = desc.result.width;
+        let bound_height = desc.result.height;
+        let bound_x = desc.result.x;
+        let bound_y = desc.result.y;
+
+        let dir = &desc.style.direction.clone();
+
+        let (remain, total_grow) = Layout::get_flex_container(&children, &dir, container, &ddom);
         container = clamp_min(container - remain, 0.0);
         let grow_factor = container / total_grow;
 
@@ -141,24 +157,15 @@ impl Layout {
             let children = self.get_children(&child, child_parent);
 
             {
-                let (parent_width, parent_height, parent_x, parent_y) =
-                    self.parent_bound(child, element, ddom);
-
                 let mut desc = ddom.div_data.get_mut(&child).unwrap();
 
-                Layout::set_box_size(
-                    &mut desc,
-                    container,
-                    grow_factor,
-                    parent_width,
-                    parent_height,
-                );
+                Layout::set_box_size(&mut desc, container, grow_factor, bound_width, bound_height);
 
                 match dir {
                     Direction::Column => {
                         desc.result.y = y;
                         desc.result.x = x;
-                        y += parent_y + desc.result.height;
+                        y += desc.result.height;
                     }
                     Direction::Row => {
                         desc.result.x = x;
