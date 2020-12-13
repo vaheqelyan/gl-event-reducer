@@ -13,7 +13,6 @@ use std::ptr;
 use std::str;
 
 use crate::boot::Cursor;
-use crate::dom::{Dom, Element, ElementMetaData};
 use crate::font::Font;
 
 use crate::resource::Resource;

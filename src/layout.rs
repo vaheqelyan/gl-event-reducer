@@ -1,6 +1,7 @@
-use crate::ddom::Ddom;
 use crate::div::div_element::Div;
-use crate::dom::{Element, ElementMetaData};
+use crate::dom::Dom;
+use crate::dom_db::DomDB;
+use crate::low_dom::{Element, ElementMetaData};
 use crate::style::{Dimension, Direction, Display};
 use itertools::Itertools;
 use num_traits::clamp_min;
@@ -19,10 +20,10 @@ impl Layout {
             height: 0.0,
         }
     }
-    pub(crate) fn viewport(&mut self, width: f32, height: f32, ddom: &mut Ddom) {
+    pub(crate) fn viewport(&mut self, width: f32, height: f32, dom_db: &mut DomDB) {
         self.width = width;
         self.height = height;
-        let mut result = &mut ddom.div_data.get_mut(&0).unwrap().result;
+        let mut result = &mut dom_db.div_data.get_mut(&0).unwrap().result;
         result.width = width;
         result.height = height;
     }
@@ -44,12 +45,12 @@ impl Layout {
         &self,
         child: usize,
         element: usize,
-        ddom: &Ddom,
+        dom_db: &DomDB,
     ) -> (f32, f32, f32, f32) {
         if child == element {
             (self.width, self.height, 0.0, 0.0)
         } else {
-            let result = &ddom.div_data.get(&element).unwrap().result;
+            let result = &dom_db.div_data.get(&element).unwrap().result;
             (result.width, result.height, result.x, result.y)
         }
     }
@@ -85,15 +86,22 @@ impl Layout {
             Layout::calc_dimension(&div.style.height, container, grow_factor, c_height);
     }
 
+    pub(crate) fn get_dimension(div: &Dimension) -> f32 {
+        match div {
+            Dimension::Px(width) => *width,
+            _ => 0.0,
+        }
+    }
+
     pub(crate) fn get_flex_container(
         children: &Vec<usize>,
         dir: &Direction,
         container: f32,
-        ddom: &Ddom,
-    ) -> (f32, f32) {
-        let remain_space: Option<(f32, f32)> =
-            children.iter().fold(Some((0.0, 0.0)), |acc, element| {
-                let style = &ddom.div_data.get(&element).unwrap().style;
+        dom_db: &DomDB,
+    ) -> (f32, f32, f32) {
+        let remain_space: Option<(f32, f32, f32)> =
+            children.iter().fold(Some((0.0, 0.0, 0.0)), |acc, element| {
+                let style = &dom_db.div_data.get(&element).unwrap().style;
 
                 let basis = match dir {
                     Direction::Row => {
@@ -115,9 +123,20 @@ impl Layout {
                     },
                 };
 
-                let (basis_result, grow_result) = acc.unwrap();
+                let margin = match dir {
+                    Direction::Row => Layout::get_dimension(&style.margin_left),
+                    Direction::Column => Layout::get_dimension(&style.margin_top),
+                };
 
-                Some((basis + basis_result, grow + grow_result))
+                //let margin = Layout::get_dimension(&style.margin_left);
+
+                let (basis_result, grow_result, margin_result) = acc.unwrap();
+
+                Some((
+                    basis + basis_result,
+                    grow + grow_result,
+                    margin + margin_result,
+                ))
             });
 
         remain_space.unwrap()
@@ -127,13 +146,13 @@ impl Layout {
         &mut self,
         element: usize,
         children: Vec<usize>,
-        ddom: &mut Ddom,
+        dom_db: &mut DomDB,
         metadata: &HashMap<usize, ElementMetaData>,
         child_parent: &HashMap<usize, usize>,
         parent_id: usize,
         mut far_y: f32,
     ) {
-        let desc = ddom.div_data.get(&element).unwrap();
+        let desc = dom_db.div_data.get(&element).unwrap();
         let mut x = desc.result.x;
         let mut y = desc.result.y;
 
@@ -149,28 +168,44 @@ impl Layout {
 
         let dir = &desc.style.direction.clone();
 
-        let (remain, total_grow) = Layout::get_flex_container(&children, &dir, container, &ddom);
-        container = clamp_min(container - remain, 0.0);
+        let (remain, total_grow, margin) =
+            Layout::get_flex_container(&children, &dir, container, &dom_db);
+
+        container = clamp_min((container - remain) - margin, 0.0);
         let grow_factor = container / total_grow;
 
         for child in children {
             let children = self.get_children(&child, child_parent);
 
             {
-                let mut desc = ddom.div_data.get_mut(&child).unwrap();
+                let mut desc = dom_db.div_data.get_mut(&child).unwrap();
 
                 Layout::set_box_size(&mut desc, container, grow_factor, bound_width, bound_height);
 
                 match dir {
                     Direction::Column => {
-                        desc.result.y = y;
+                        let margin = Layout::calc_dimension(
+                            &desc.style.margin_top,
+                            container,
+                            0.0,
+                            bound_height,
+                        );
+
+                        desc.result.y = y + margin;
                         desc.result.x = x;
-                        y += desc.result.height;
+                        y += (desc.result.height) + margin;
                     }
                     Direction::Row => {
-                        desc.result.x = x;
+                        let margin = Layout::calc_dimension(
+                            &desc.style.margin_left,
+                            container,
+                            0.0,
+                            bound_width,
+                        );
+
+                        desc.result.x = x + margin;
                         desc.result.y = y;
-                        x += (desc.result.width);
+                        x += (desc.result.width) + margin;
                     }
                 };
 
@@ -180,7 +215,7 @@ impl Layout {
             self.traverse(
                 child,
                 children,
-                ddom,
+                dom_db,
                 metadata,
                 child_parent,
                 element,
@@ -193,9 +228,18 @@ impl Layout {
         &mut self,
         el_ids: &Vec<usize>,
         el_meta: &HashMap<usize, ElementMetaData>,
-        ddom: &mut Ddom,
+        dom_db: &mut DomDB,
         child_parent: &HashMap<usize, usize>,
     ) {
-        self.traverse(el_ids[0], vec![0], ddom, el_meta, child_parent, 0, 0.0);
+        self.traverse(el_ids[0], vec![0], dom_db, el_meta, child_parent, 0, 0.0);
+    }
+
+    pub(crate) fn layout(&mut self, dom: &mut Dom) {
+        self.calculate_bound(
+            &dom.low_dom.vec,
+            &dom.low_dom.map,
+            &mut dom.dom_db,
+            &dom.low_dom.child_parent,
+        );
     }
 }

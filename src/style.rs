@@ -37,6 +37,10 @@ pub struct Style {
     pub left: Dimension,
     pub top: Dimension,
     pub right: Dimension,
+    pub margin_top: Dimension,
+    pub margin_right: Dimension,
+    pub margin_bottom: Dimension,
+    pub margin_left: Dimension,
 }
 
 impl Default for Style {
@@ -52,6 +56,10 @@ impl Default for Style {
             top: Dimension::Px(0.0),
             right: Dimension::Px(0.0),
             direction: Direction::Row,
+            margin_top: Dimension::Px(0.0),
+            margin_right: Dimension::Px(0.0),
+            margin_bottom: Dimension::Px(0.0),
+            margin_left: Dimension::Px(0.0),
         }
     }
 }

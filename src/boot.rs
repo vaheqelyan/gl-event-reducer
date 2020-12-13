@@ -1,9 +1,11 @@
-use crate::dom::{Dom, Element, ElementMetaData};
+//use crate::dom::{Dom, Element, ElementMetaData};
+use crate::dom::Dom;
 use crate::gl_core::Gl;
 
 use crate::render::Render;
 use crate::resource::Resource;
 //use crate::utils::find_bound_xy;
+use crate::layout::Layout;
 use core::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -21,6 +23,7 @@ pub struct Boot {
     pub cursor: Cursor,
     pub focus: Option<usize>,
     pub event_state: EventState,
+    layout: Layout,
     render: Render,
 }
 
@@ -41,7 +44,6 @@ pub enum EventFlow {
     Right,
 
     Init(f32, f32),
-
     PointerDown,
     PointerMove,
     PointerUp,
@@ -58,6 +60,7 @@ impl Boot {
                 pointermove: false,
                 pointerup: false,
             },
+            layout: Layout::new(),
             render: Render::new(),
         }
     }
@@ -83,9 +86,10 @@ impl Boot {
                 });
 
                 let col2 = self.dom.div(Style {
-                    width: Dimension::Grow(2.0),
+                    width: Dimension::Grow(1.0),
                     height: Dimension::Perc(30.0),
                     bg_color: [249.0, 163.0, 91.0],
+                    //margin_top: Dimension::Px(10.0),
                     ..Default::default()
                 });
 
@@ -94,7 +98,6 @@ impl Boot {
                     height: Dimension::Perc(30.0),
                     bg_color: [236.0, 115.0, 121.0],
                     direction: Direction::Column,
-                    overflow: Overflow::Scroll,
                     ..Default::default()
                 });
 
@@ -135,27 +138,25 @@ impl Boot {
                     ..Default::default()
                 });*/
 
-                let body = self.dom.get_top_screen();
+                let body = self.dom.get_papa();
 
                 self.dom.append(col1, container);
                 self.dom.append(col2, container);
                 //self.dom.append(col3, container);
 
-                self.dom.append(block1, col3);
+                /*self.dom.append(block1, col3);
 
                 self.dom.append(block2, col3);
                 self.dom.append(block3, col3);
-                self.dom.append(block4, col3);
+                self.dom.append(block4, col3);*/
 
                 self.dom.append(col3, container);
 
                 self.dom.append(container, body);
 
-                self.dom.layout();
+                self.layout.layout(&mut self.dom);
 
                 gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
-
-                //gl.draw(self.render.render_buffer(&self.dom, resource, self.focus));
             }
         }
     }
@@ -169,7 +170,8 @@ impl Boot {
     pub fn dispatch_event(&mut self, event: EventFlow, gl: &mut Gl, resource: &mut Resource) {
         match event {
             EventFlow::Init(width, height) => {
-                self.dom.top_screen(width, height);
+                self.dom.make(width, height);
+                //self.dom.top_screen(width, height);
             }
 
             EventFlow::Type(key) => {

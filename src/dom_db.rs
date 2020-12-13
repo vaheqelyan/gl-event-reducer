@@ -7,39 +7,24 @@ use num_traits::{clamp, clamp_min};
 
 use crate::div::div_element::Div;
 use crate::input::input_element::Input;
-use crate::scroll::scroll_element::Scroll;
 
-#[derive(Debug)]
-struct ElementData {
-    value: String,
-}
-
-#[derive(Debug)]
-pub struct Ddom {
-    data: HashMap<usize, ElementData>,
+pub(crate) struct DomDB {
     pub input_data: HashMap<usize, Input>,
     pub div_data: HashMap<usize, Div>,
-    pub scroll_data: HashMap<usize, Scroll>,
     pub font: Font,
 }
 
-impl Ddom {
-    pub fn new() -> Ddom {
-        Ddom {
-            data: HashMap::new(),
+impl DomDB {
+    pub(crate) fn new() -> Self {
+        DomDB {
             input_data: HashMap::new(),
             div_data: HashMap::new(),
-            scroll_data: HashMap::new(),
             font: Font::new(),
         }
     }
 
     pub fn register_div(&mut self, id: usize, style: Style) {
         self.div_data.insert(id, Div::new(style));
-    }
-
-    pub fn register_scroll(&mut self, id: usize, style: Style) {
-        self.scroll_data.insert(id, Scroll::new(style));
     }
 
     pub fn register_input(&mut self, id: usize, style: Style) {
@@ -93,5 +78,12 @@ impl Ddom {
             data_element.select(container, x, y, cursor, &mut self.font);
         }
     }
-    pub fn foo(&mut self) {}
+
+    pub fn get_input(&self, id: usize) -> &Input {
+        self.input_data.get(&(&id + 1)).unwrap()
+    }
+
+    pub fn get_div(&self, id: usize) -> &Div {
+        self.div_data.get(&(&id)).unwrap()
+    }
 }

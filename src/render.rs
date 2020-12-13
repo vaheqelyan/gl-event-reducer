@@ -1,4 +1,6 @@
-use crate::dom::{Dom, Element};
+use crate::dom::Dom;
+use crate::dom_db::DomDB;
+use crate::low_dom::{Element, LowDom};
 use crate::resource::Resource;
 use crate::style::Style;
 use crate::utils::{div, layer, rgb, size, xy};
@@ -16,16 +18,17 @@ impl Render {
         resource: &mut Resource,
         focus_id: Option<usize>,
     ) -> Vec<f32> {
+        let low_dom = &dom.low_dom;
+        let dom_db = &dom.dom_db;
         let mut buffer = vec![];
 
-        for x in &dom.vec {
-            let get_dom = &dom;
-            let bound = get_dom.get(*x);
+        for x in &low_dom.vec {
+            let meta_data = low_dom.get(*x);
 
-            let scroll_papa = dom.ddom.div_data.get(&bound.belong_to_screen).unwrap();
+            let scroll_papa = dom_db.div_data.get(&meta_data.belong_to_screen).unwrap();
 
-            if let Element::Div = bound.element_type {
-                let inst_div = get_dom.get_div(*x);
+            if let Element::Div = meta_data.element_type {
+                let inst_div = dom_db.get_div(*x);
                 let result = &inst_div.result;
                 let style = &inst_div.style;
 
