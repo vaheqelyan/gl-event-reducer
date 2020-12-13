@@ -172,6 +172,8 @@ impl Layout {
             Layout::get_flex_container(&children, &dir, container, &dom_db);
 
         container = clamp_min((container - remain) - margin, 0.0);
+        println!("{:?} {:?} {:?}", container, remain, margin);
+
         let grow_factor = container / total_grow;
 
         for child in children {
@@ -181,6 +183,7 @@ impl Layout {
                 let mut desc = dom_db.div_data.get_mut(&child).unwrap();
 
                 Layout::set_box_size(&mut desc, container, grow_factor, bound_width, bound_height);
+                //println!("{:?}", desc.result.height);
 
                 match dir {
                     Direction::Column => {

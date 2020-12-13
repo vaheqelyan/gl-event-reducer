@@ -1,4 +1,3 @@
-//use crate::dom::{Dom, Element, ElementMetaData};
 use crate::dom::Dom;
 use crate::gl_core::Gl;
 
@@ -86,14 +85,24 @@ impl Boot {
                 });
 
                 let col2 = self.dom.div(Style {
-                    width: Dimension::Grow(1.0),
+                    width: Dimension::Px(10.0),
                     height: Dimension::Perc(30.0),
                     bg_color: [249.0, 163.0, 91.0],
+                    direction: Direction::Column,
                     //margin_top: Dimension::Px(10.0),
                     ..Default::default()
                 });
 
-                let col3 = self.dom.div(Style {
+                let thumb = self.dom.div(Style {
+                    width: Dimension::Px(10.0),
+                    height: Dimension::Px(30.0),
+                    bg_color: [0.0, 39.0, 255.0],
+                    direction: Direction::Column,
+                    margin_top: Dimension::Px(200.0),
+                    ..Default::default()
+                });
+
+                /*let col3 = self.dom.div(Style {
                     width: Dimension::Grow(1.0),
                     height: Dimension::Perc(30.0),
                     bg_color: [236.0, 115.0, 121.0],
@@ -128,7 +137,7 @@ impl Boot {
                     height: Dimension::Grow(1.0),
                     bg_color: [255.0, 3.0, 255.0],
                     ..Default::default()
-                });
+                });*/
 
                 /*let block1_1 = self.dom.div(Style {
                     width: Dimension::Px(10.0),
@@ -141,7 +150,12 @@ impl Boot {
                 let body = self.dom.get_papa();
 
                 self.dom.append(col1, container);
+
+                self.dom.append(thumb, col2);
+
                 self.dom.append(col2, container);
+
+                //self.dom.append(thumb, col2);
                 //self.dom.append(col3, container);
 
                 /*self.dom.append(block1, col3);
@@ -150,7 +164,7 @@ impl Boot {
                 self.dom.append(block3, col3);
                 self.dom.append(block4, col3);*/
 
-                self.dom.append(col3, container);
+                //self.dom.append(col3, container);
 
                 self.dom.append(container, body);
 
