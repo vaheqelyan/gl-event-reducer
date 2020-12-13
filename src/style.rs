@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Dimension {
     Px(f32),
     Perc(f32),
@@ -7,13 +7,13 @@ pub enum Dimension {
     Grow(f32),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Display {
     Block,
     InlineBlock,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Overflow {
     Scroll,
     Hidden,
@@ -25,7 +25,7 @@ pub enum Direction {
     Column,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Style {
     pub direction: Direction,
     pub width: Dimension,

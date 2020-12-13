@@ -1,6 +1,9 @@
 use crate::boot::Cursor;
 use crate::font::Font;
+use crate::low_dom::LowDom;
 use std::collections::HashMap;
+
+use crate::dom_db::DomDB as SelfDomDB;
 
 use crate::style::Style;
 use num_traits::{clamp, clamp_min};
@@ -23,8 +26,8 @@ impl DomDB {
         }
     }
 
-    pub fn register_div(&mut self, id: usize, style: Style) {
-        self.div_data.insert(id, Div::new(style));
+    pub fn register_div(&mut self, id: usize, style: Style, low_dom: &mut LowDom) {
+        self.div_data.insert(id, Div::new(style, low_dom));
     }
 
     pub fn register_input(&mut self, id: usize, style: Style) {

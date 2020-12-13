@@ -1,5 +1,6 @@
 use crate::boot::Cursor;
 use crate::font::Font;
+use crate::low_dom::LowDom;
 use crate::style::Style;
 use num_traits::{clamp, clamp_max, clamp_min, sign};
 
@@ -19,7 +20,7 @@ pub struct Div {
 }
 
 impl Div {
-    pub fn new(style: Style) -> Self {
+    pub fn new(style: Style, low_dom: &mut LowDom) -> Self {
         Div {
             result: DivResult {
                 width: 0.0,

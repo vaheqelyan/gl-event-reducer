@@ -74,22 +74,23 @@ impl Boot {
                     height: Dimension::Perc(100.0),
                     bg_color: [233.0, 233.0, 233.0],
                     direction: Direction::Row,
+                    overflow: Overflow::Scroll,
                     ..Default::default()
                 });
 
-                let col1 = self.dom.div(Style {
+                /*let col1 = self.dom.div(Style {
                     width: Dimension::Grow(1.0),
                     height: Dimension::Perc(30.0),
                     bg_color: [165.0, 105.0, 80.0],
+                    //overflow: Overflow::Scroll,
                     ..Default::default()
-                });
+                });*/
 
-                let col2 = self.dom.div(Style {
+                /*let col2 = self.dom.div(Style {
                     width: Dimension::Px(10.0),
                     height: Dimension::Perc(30.0),
                     bg_color: [249.0, 163.0, 91.0],
                     direction: Direction::Column,
-                    //margin_top: Dimension::Px(10.0),
                     ..Default::default()
                 });
 
@@ -98,9 +99,9 @@ impl Boot {
                     height: Dimension::Px(30.0),
                     bg_color: [0.0, 39.0, 255.0],
                     direction: Direction::Column,
-                    margin_top: Dimension::Px(200.0),
+                    margin_top: Dimension::Px(0.0),
                     ..Default::default()
-                });
+                });*/
 
                 /*let col3 = self.dom.div(Style {
                     width: Dimension::Grow(1.0),
@@ -149,11 +150,11 @@ impl Boot {
 
                 let body = self.dom.get_papa();
 
-                self.dom.append(col1, container);
+                //self.dom.append(col1, container);
 
-                self.dom.append(thumb, col2);
+                //self.dom.append(thumb, col2);
 
-                self.dom.append(col2, container);
+                //self.dom.append(col2, container);
 
                 //self.dom.append(thumb, col2);
                 //self.dom.append(col3, container);
@@ -167,6 +168,7 @@ impl Boot {
                 //self.dom.append(col3, container);
 
                 self.dom.append(container, body);
+                println!("{:#?}", self.dom.low_dom.child_parent);
 
                 self.layout.layout(&mut self.dom);
 
