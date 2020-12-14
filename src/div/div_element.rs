@@ -1,6 +1,7 @@
 use crate::boot::Cursor;
 use crate::font::Font;
 use crate::low_dom::LowDom;
+use crate::style::Overflow;
 use crate::style::Style;
 use num_traits::{clamp, clamp_max, clamp_min, sign};
 
@@ -30,6 +31,14 @@ impl Div {
                 far_y: 0.0,
             },
             style,
+        }
+    }
+
+    pub(crate) fn append(&self, id: usize) -> usize {
+        if let Overflow::Scroll = self.style.overflow {
+            id + 1
+        } else {
+            id
         }
     }
 }

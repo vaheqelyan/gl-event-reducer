@@ -81,11 +81,11 @@ impl Dom {
                 &mut self.low_dom,
             );
 
-            println!("{:?}", self.low_dom.vec);
+            //println!("{:?}", self.low_dom.vec);
 
-            self.append(scroll_body, id);
-            self.append(thumb_line, id);
-            self.append(thumb, thumb_line);
+            self.low_dom.insert(scroll_body, id);
+            self.low_dom.insert(thumb_line, id);
+            self.low_dom.insert(thumb, thumb_line);
 
             id
         } else {
@@ -124,6 +124,6 @@ impl Dom {
     }
 
     pub fn append(&mut self, element: usize, parent: usize) {
-        self.low_dom.append(element, parent);
+        self.low_dom.append(element, parent, &mut self.dom_db);
     }
 }

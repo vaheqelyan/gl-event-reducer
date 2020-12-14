@@ -1,3 +1,4 @@
+use crate::dom_db::DomDB;
 use std::collections::HashMap;
 
 #[derive(Debug)]
@@ -44,7 +45,7 @@ impl LowDom {
         self.id - 1
     }
 
-    pub fn append(&mut self, element: usize, parent: usize) {
+    pub(crate) fn insert(&mut self, element: usize, parent: usize) {
         let meta = self.get(parent);
         let screen_id = meta.belong_to_screen;
         if meta.scroll == true {
@@ -56,6 +57,23 @@ impl LowDom {
         }
 
         self.child_parent.insert(element, parent);
+    }
+
+    pub(crate) fn append(&mut self, element: usize, parent: usize, dom_db: &mut DomDB) {
+        let meta = self.get(parent);
+        let screen_id = meta.belong_to_screen;
+        if meta.scroll == true {
+            let mut meta_child = self.map.get_mut(&element).unwrap();
+            meta_child.belong_to_screen = parent;
+        } else {
+            let mut meta_child = self.map.get_mut(&element).unwrap();
+            meta_child.belong_to_screen = screen_id;
+        }
+
+        let div = dom_db.div_data.get(&parent).unwrap();
+        let point_id = div.append(parent);
+
+        self.child_parent.insert(element, point_id);
     }
 
     pub fn debug(&self) {

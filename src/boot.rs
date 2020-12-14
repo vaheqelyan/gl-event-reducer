@@ -78,13 +78,15 @@ impl Boot {
                     ..Default::default()
                 });
 
-                /*let col1 = self.dom.div(Style {
+                let col1 = self.dom.div(Style {
                     width: Dimension::Grow(1.0),
                     height: Dimension::Perc(30.0),
                     bg_color: [165.0, 105.0, 80.0],
                     //overflow: Overflow::Scroll,
                     ..Default::default()
-                });*/
+                });
+
+                self.dom.append(col1, container);
 
                 /*let col2 = self.dom.div(Style {
                     width: Dimension::Px(10.0),
@@ -168,7 +170,6 @@ impl Boot {
                 //self.dom.append(col3, container);
 
                 self.dom.append(container, body);
-                println!("{:#?}", self.dom.low_dom.child_parent);
 
                 self.layout.layout(&mut self.dom);
 
